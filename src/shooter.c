@@ -4,23 +4,23 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "data.h"
 #include "shooter.h"
 #include "screen.h"
 #include "input.h"
-#include "data.h"
 #include "objpool.h"
 
 // too lazy to learn TLINK :-)
-#include "screen.c"
-#include "input.c"
-#include "objpool.c"
-#include "d_gen.c"
-#include "d_grch.c"
-#include "d_octo.c"
-#include "d_bible.c"
-#include "d_supply.c"
-#include "d_flank.c"
-#include "data.c"
+//#include "screen.c"
+//#include "input.c"
+//#include "objpool.c"
+//#include "d_gen.c"
+//#include "d_grch.c"
+//#include "d_octo.c"
+//#include "d_bible.c"
+//#include "d_supply.c"
+//#include "d_flank.c"
+//#include "data.c"
 
 #define VIEWGRID_SCREEN_X               1
 #define VIEWGRID_SCREEN_Y               0

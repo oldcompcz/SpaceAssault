@@ -1,3 +1,4 @@
+#include <dos.h>
 #include "input.h"
 
 unsigned char uifn_hold[UIFN_COUNT];

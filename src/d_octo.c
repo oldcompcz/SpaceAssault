@@ -30,11 +30,6 @@ static const sTurret turret_octo_lbullet    = TURRET_GRID(0, 3, 0, 8, &ot_foe_bu
 static const sTurret turret_octo_rbullet    = TURRET_GRID(4, 3, 0, 8, &ot_foe_bullet);
 static const sTurret turret_octo_laser      = TURRET_GRID(2, 3, 0, 16, &ot_foe_laser);
 
-#define OCTO_ST_CLW_GO_RIGHT            0
-#define OCTO_ST_CLW_GO_DOWN             1
-#define OCTO_ST_CLW_GO_LEFT             2
-#define OCTO_ST_CLW_GO_UP               3
-
 void octo_init(hsObject obj, unsigned char state) {
 
     obj->pos.x      = 0;

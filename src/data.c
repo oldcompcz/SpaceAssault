@@ -1,5 +1,9 @@
 #include <stdlib.h>
 
+#include "shooter.h"
+#include "objpool.h"
+#include "data.h"
+
 // ---------------------------------------------------------------------------
 // scenario callbacks
 // ---------------------------------------------------------------------------
@@ -123,8 +127,6 @@ static const sDisplayText text_outro[] = {
     
     { { 27, 16 }, 0x07, "THE END" }
 };
-
-#define dimof(x) (sizeof(x) / sizeof(x[0]))
 
 #define SCPOINT_SUB_TEXT(t, c)      (t), (c)
 #define SCPOINT_SUB_TEXT_NONE       NULL, 0

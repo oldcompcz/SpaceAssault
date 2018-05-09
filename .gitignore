@@ -5,3 +5,4 @@
 *.res
 stderr.txt
 stdout.txt
+MAKEFILE.LOC

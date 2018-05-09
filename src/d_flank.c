@@ -31,11 +31,6 @@ static const sTurret turret_flank_left      = TURRET_GRID(0, 2, -10, 9, &ot_foe_
 static const sTurret turret_flank_right     = TURRET_GRID(4, 2, +10, 9, &ot_foe_bullet);
 static const sTurret turret_flank_center    = TURRET_GRID(2, 2,  0, 16, &ot_foe_laser);
 
-#define FLANK_GO_LEFT_DOWN              0
-#define FLANK_GO_RIGHT_UP               1
-#define FLANK_GO_RIGHT_DOWN             2
-#define FLANK_GO_LEFT_UP                3
-
 #pragma argsused
 void flank_init(hsObject obj, unsigned char state) {
 
