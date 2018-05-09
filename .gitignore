@@ -3,3 +3,5 @@
 *.obj
 *.exe
 *.res
+stderr.txt
+stdout.txt
