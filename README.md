@@ -1,6 +1,14 @@
 # SpaceAssault
 DOS space shooter in ASCII.
 
+## Screenshots
+
+![incoming enemies](./screenshots/screen1.png)
+![aggresive flankers](./screenshots/screen2.png)
+![healthy space berries](./screenshots/screen3.png)
+![grchkrx bees defending their queen](./screenshots/screen4.png)
+![alien bible](./screenshots/screen5.png)
+
 ## Development setup
 
 1. Unpack copy of Borland's TurboC somewhere.
