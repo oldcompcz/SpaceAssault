@@ -2,7 +2,7 @@
 
 # compiler
 CC=$(TCCDIR)\bin\tcc.exe
-CFLAGS=-1 -ms -g3 -j3 -G -d -O2 -Z -I$(TCCDIR)\include -Isrc -Isrc\general -Isrc\data -Isrc\scenario
+CFLAGS=-1 -ms -g3 -j3 -G -d -O2 -Z -I$(TCCDIR)\include -Isrc
 
 # linker
 TL=$(TCCDIR)\bin\tlink
