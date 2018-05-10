@@ -33,12 +33,6 @@ emu cs
 # implicit rules to compile sources
 {src}.c.obj:
     $(CC) $(CFLAGS) -c $<
-{src\data}.c.obj:
-    $(CC) $(CFLAGS) -c $<
-{src\general}.c.obj:
-    $(CC) $(CFLAGS) -c $<
-{src\scenario}.c.obj:
-    $(CC) $(CFLAGS) -c $<
 
 # clean obj files
 clean:
