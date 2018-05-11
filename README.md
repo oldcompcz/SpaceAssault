@@ -1,5 +1,6 @@
 # SpaceAssault
-DOS space shooter in ASCII.
+
+DOS space shooter in ASCII. To run, just download the latest release (single `spaceass.exe` file) and run it through DosBox.
 
 ## Screenshots
 
