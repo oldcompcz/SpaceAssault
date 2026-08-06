@@ -15,7 +15,7 @@ static const sPhysical phy_grchkrx_bee = {
 static const sPhysical phy_grchkrx_bee_hit = {
     { 5, 2 },
     {
-        '/',    0x0c,   'X',    0x06,   'X',    0x06,   'X',    0x06,   '\\',   0x0c,
+        '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,
         '\\',   0x0c,   '|',    0x0c,   '!',    0x09,   '|',    0x0c,   '/',    0x0c
     }
 };
