@@ -29,6 +29,10 @@ hsObject objpool_alloc_flags(hcsObjType type, char flags) {
         obj->ttl            = 0;
         obj->damage_now     = 0;
         obj->damage_total   = 0;
+        obj->state[0]       = 0;
+        obj->state[1]       = 0;
+        obj->state[2]       = 0;
+        obj->state[3]       = 0;
         return obj;
     }
             
