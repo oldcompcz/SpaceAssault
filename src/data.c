@@ -287,23 +287,23 @@ const sScenarioPoint g_scenario[] = {
     SCPOINT_MACRO_TEXT(text_final_showdown, 2, 5),
     
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_grchkrx_queen, SCPOINT_EPOS(26, 10) },
-    SCPOINT_MACRO_DELAY(2),
+    SCPOINT_MACRO_DELAY(5),
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_grchkrx_queen, SCPOINT_EPOS(6, 15) },
-    SCPOINT_MACRO_DELAY(2),
+    SCPOINT_MACRO_DELAY(5),
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_grchkrx_queen, SCPOINT_EPOS(46, 10) },
 
-    SCPOINT_MACRO_DELAY(15),
+    SCPOINT_MACRO_DELAY(20),
     
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_alien_bible, SCPOINT_EPOS(26, 20) },
-    SCPOINT_MACRO_DELAY(2),
+    SCPOINT_MACRO_DELAY(5),
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_alien_bible, SCPOINT_EPOS(6, 25) },
-    SCPOINT_MACRO_DELAY(2),
+    SCPOINT_MACRO_DELAY(5),
     { SCPOINT_TYPE_NONE, 0, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT_NONE, &ot_alien_bible, SCPOINT_EPOS(46, 20) },
 
-    SCPOINT_MACRO_DELAY(60),
+    SCPOINT_MACRO_DELAY(80),
     
     { SCPOINT_TYPE_NONE, 1, 2, scpt_emit_flank_right, SCPOINT_SUB_TEXT_NONE, NULL, SCPOINT_EPOS(0, 0) },
-    SCPOINT_MACRO_DELAY(25),
+    SCPOINT_MACRO_DELAY(40),
     { SCPOINT_TYPE_NONE, 1, 2, scpt_emit_flank_left, SCPOINT_SUB_TEXT_NONE, NULL, SCPOINT_EPOS(0, 0) },
     SCPOINT_MACRO_WAIT_DEAD(3),
 
