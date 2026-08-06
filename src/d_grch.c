@@ -15,7 +15,7 @@ static const sPhysical phy_grchkrx_bee = {
 static const sPhysical phy_grchkrx_bee_hit = {
     { 5, 2 },
     {
-        '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,
+        '/',    0x0c,   'X',    0x06,   'X',    0x06,   'X',    0x06,   '\\',   0x0c,
         '\\',   0x0c,   '|',    0x0c,   '!',    0x09,   '|',    0x0c,   '/',    0x0c
     }
 };
@@ -72,6 +72,9 @@ static const sTurret turret_grchkrx_queen_7 = TURRET_GRID(4, 3, +4, 7, &ot_foe_b
 
 void cb_bee_behave(hsObject obj) {
 
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
     obj->physical = &phy_grchkrx_bee;
 
     if (obj->pos.x == grid2world(0) && obj->speed.x < 0)
@@ -85,13 +88,10 @@ void cb_bee_behave(hsObject obj) {
 
     obj->speed.y = 2 - (rand() % 5);
         
-    if (!(obj->flags & OBJ_FLG_DYING)) {
-    
-        if (obj->ttl == 0) {
+    if (obj->ttl == 0) {
 
-            obj->ttl = (rand() & 3) + 20;
-            fire_turret(obj, &turret_grchkrx_bee);
-        }
+        obj->ttl = (rand() & 3) + 20;
+        fire_turret(obj, &turret_grchkrx_bee);
     }
 }
 
