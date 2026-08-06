@@ -63,6 +63,13 @@ static const sPhysical phy_supply = {
         ':',    0x78,   ' ',    0x74,   '+',    0x74,   ' ',    0x74,   ':',    0x78
     }
 };
+static const sPhysical phy_supply_hit = {
+    { 5, 2 },
+    {
+        '_',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,
+        ':',    0x38,   ' ',    0x34,   '+',    0x34,   ' ',    0x34,   ':',    0x38
+    }
+};
 static const sPhysical phy_supply_dying = {
     { 5, 2 },
     {
@@ -116,7 +123,7 @@ static void supply_die(hsObject obj) {
 #pragma argsused
 static void supply_hit(hsObject obj) {
 
-//    obj->physical = &phy_octo_hit;
+    obj->physical = &phy_supply_hit;
 }
 
 const sObjType ot_supply = {
