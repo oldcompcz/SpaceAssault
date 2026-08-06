@@ -67,7 +67,7 @@ static const sPhysical phy_supply_hit = {
     { 5, 2 },
     {
         '_',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,
-        ':',    0x38,   ' ',    0x34,   '+',    0x34,   ' ',    0x34,   ':',    0x38
+        ':',    0xf8,   ' ',    0xf4,   '+',    0xf4,   ' ',    0xf4,   ':',    0xf8
     }
 };
 static const sPhysical phy_supply_dying = {

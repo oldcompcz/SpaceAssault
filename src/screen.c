@@ -13,12 +13,22 @@ void screen_init(void) {
     _AX = 0x1112;
     _BX = 0;
     geninterrupt(0x10);
+
+    // disable blink and enable background intensity
+    _AX = 0x1003;
+    _BX = 0x0000;
+    geninterrupt(0x10);  
 }
 
 void screen_close(void) {
 
     _AX = 0x0003;
     _BX = 0;
+    geninterrupt(0x10);
+
+    // re-enable blink instead of background intensity
+    _AX = 0x1003;
+    _BX = 0x0001;
     geninterrupt(0x10);
 }
 
@@ -204,7 +214,7 @@ void screen_print_uint(char x, char y, unsigned int value) {
 
     // TODO
     value = value;
-//    screen_buff_uint(value);
+    //screen_buff_uint(value);
     screen_print_buff(screen_offset_xy(x, y));
 }
 
