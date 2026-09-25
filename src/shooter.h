@@ -110,6 +110,10 @@ typedef const sTurret *hcsTurret;
 #define OBJTYPE_NAT_FOE_OBJ                 (OBJTYPE_NATMASK_FOE | OBJTYPE_NATMASK_OBJ)
 #define OBJTYPE_NAT_FOE_BULLET              (OBJTYPE_NATMASK_FOE | OBJTYPE_NATMASK_BULLET)
 
+// object class flags
+#define OBJTYPE_FLG_NONE                    0x00
+#define OBJTYPE_FLG_HPBAR                   0x01    // show hp bar above the object
+
 // callback to implement object's tick behaviour
 typedef void cbObject(hsObject obj);
 typedef void cbObjectObject(hsObject obj1, hsObject obj2);
@@ -119,6 +123,7 @@ typedef struct sObjType {
 
     hcsPhysical             physical;       // default physical properties (visual, damage)
     char                    nature;         // one of OBJTYPE_NAT_*
+    unsigned char           flags;          // OBJTYPE_FLG_*
     unsigned int            hp;             // total hitpoints / bullet damage
 
     cbObject                *cb_behave;     // callback for object's daily routine

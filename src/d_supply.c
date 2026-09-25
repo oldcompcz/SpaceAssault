@@ -45,6 +45,7 @@ static void heal_deal(hsObject bullet, hsObject target) {
 const sObjType ot_bonus_heal = {
     &phy_bonus_heal,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     20,
     heal_behave,
     NULL,
@@ -129,6 +130,7 @@ static void supply_hit(hsObject obj) {
 const sObjType ot_supply = {
     &phy_supply,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     10,
     supply_behave,
     supply_die,

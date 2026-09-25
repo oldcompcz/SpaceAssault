@@ -117,6 +117,7 @@ static void octo_hit(hsObject obj) {
 const sObjType ot_octo = {
     &phy_octo,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     18,
     octo_behave,
     octo_die,

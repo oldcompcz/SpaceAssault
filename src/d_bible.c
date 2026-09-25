@@ -12,6 +12,7 @@ static const sPhysical phy_letter_l = PHYSICAL_1X1('L', 0x74);
 static const sObjType ot_letter_l = {
     &phy_letter_l,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     25,
     NULL,
     NULL,
@@ -22,6 +23,7 @@ static const sObjType ot_letter_l = {
 static const sObjType ot_letter_k = {
     &phy_letter_k,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     25,
     NULL,
     NULL,
@@ -32,6 +34,7 @@ static const sObjType ot_letter_k = {
 static const sObjType ot_letter_i = {
     &phy_letter_i,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     25,
     NULL,
     NULL,
@@ -129,6 +132,7 @@ static void cb_bible_die(hsObject obj) {
 const sObjType ot_alien_bible = {
     &phy_alien_bible,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_HPBAR,
     80,
     cb_bible_behave,
     cb_bible_die,

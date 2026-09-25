@@ -163,6 +163,7 @@ void cb_queen_hit(hsObject obj) {
 const sObjType ot_grchkrx_bee = {
     &phy_grchkrx_bee,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     10,
     cb_bee_behave,
     cb_bee_die,
@@ -173,6 +174,7 @@ const sObjType ot_grchkrx_bee = {
 const sObjType ot_grchkrx_queen = {
     &phy_grchkrx_queen,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_HPBAR,
     50,
     cb_queen_behave,
     cb_queen_die,

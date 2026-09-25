@@ -64,6 +64,7 @@ static const sPhysical phy_phantom_spark = PHYSICAL_1X1('o', 0x0d);
 static const sObjType ot_phantom_spark = {
     &phy_phantom_spark,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     6,
     NULL,
     NULL,
@@ -179,6 +180,7 @@ static void phantom_hit(hsObject obj) {
 const sObjType ot_phantom = {
     &phy_phantom_cloaked,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     14,
     phantom_behave,
     phantom_die,
@@ -434,6 +436,7 @@ static void phantom_lord_hit(hsObject obj) {
 const sObjType ot_phantom_lord = {
     &phy_phantom_lord_cloaked,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_HPBAR,
     90,
     phantom_lord_behave,
     phantom_lord_die,
@@ -549,6 +552,7 @@ static void mirage_illusion_behave(hsObject obj) {
 static const sObjType ot_mirage_illusion = {
     &phy_phantom_cloaked,
     OBJTYPE_NAT_NEUTRAL,
+    OBJTYPE_FLG_NONE,
     1,
     mirage_illusion_behave,
     NULL,
@@ -628,6 +632,7 @@ static void mirage_hit(hsObject obj) {
 const sObjType ot_mirage = {
     &phy_phantom_cloaked,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     12,
     mirage_behave,
     mirage_die,

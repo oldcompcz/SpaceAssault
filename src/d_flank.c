@@ -133,6 +133,7 @@ static void flank_hit(hsObject obj) {
 const sObjType ot_flank = {
     &phy_flank,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     20,
     flank_behave,
     flank_die,

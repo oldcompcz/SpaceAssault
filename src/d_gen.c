@@ -73,6 +73,7 @@ void cb_deal_die(hsObject bullet, hsObject target) {
 const sObjType ot_ally_simple = {
     &phy_bullet_simple,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     6,
     NULL,
     NULL,
@@ -117,6 +118,7 @@ void cb_behave_megablast(hsObject obj) {
 const sObjType ot_ally_bullet = {
     &phy_bullet_torpedo,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     6,
     NULL,
     NULL,
@@ -127,6 +129,7 @@ const sObjType ot_ally_bullet = {
 const sObjType ot_ally_laser = {
     &phy_bullet_laser,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     2,
     NULL,
     NULL,
@@ -137,6 +140,7 @@ const sObjType ot_ally_laser = {
 const sObjType ot_ally_laser_left = {
     &phy_laser_left,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     2,
     NULL,
     NULL,
@@ -147,6 +151,7 @@ const sObjType ot_ally_laser_left = {
 const sObjType ot_ally_laser_right = {
     &phy_laser_right,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     2,
     NULL,
     NULL,
@@ -157,6 +162,7 @@ const sObjType ot_ally_laser_right = {
 const sObjType ot_ally_megablast = {
     &phy_megablast,
     OBJTYPE_NAT_ALLY_BULLET,
+    OBJTYPE_FLG_NONE,
     12,
     cb_behave_megablast,
     NULL,
@@ -167,6 +173,7 @@ const sObjType ot_ally_megablast = {
 const sObjType ot_shield = {
     &phy_shield,
     OBJTYPE_NAT_ALLY_OBJ,
+    OBJTYPE_FLG_NONE,
     40,
     NULL,    
     NULL,    
@@ -190,6 +197,7 @@ void cb_player_die(hsObject obj) {
 const sObjType ot_player = {
     &phy_player_blue,
     OBJTYPE_NAT_ALLY_OBJ,
+    OBJTYPE_FLG_NONE,
     100,
     NULL,
     cb_player_die,
@@ -200,6 +208,7 @@ const sObjType ot_player = {
 const sObjType ot_foe_bullet = {
     &phy_bullet_simple,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     5,
     NULL,
     NULL,
@@ -210,6 +219,7 @@ const sObjType ot_foe_bullet = {
 const sObjType ot_foe_laser = {
     &phy_alien_laser,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     2,
     NULL,
     NULL,
@@ -220,6 +230,7 @@ const sObjType ot_foe_laser = {
 const sObjType ot_foe_ball = {
     &phy_alien_ball,
     OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
     10,
     NULL,
     NULL,
@@ -230,6 +241,7 @@ const sObjType ot_foe_ball = {
 const sObjType ot_btn_hitme = {
     &phy_hitme,
     OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
     1,
     NULL,
     NULL,

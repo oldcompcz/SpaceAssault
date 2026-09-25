@@ -108,6 +108,41 @@ hsObject fire_turret(hsObject obj, hcsTurret turret) {
 #define PERIOD_8PERSEC          (!(cycle & 7))
 #define PERIOD_16PERSEC         (!(cycle & 3))
 
+// hp bar in the row above objects of types asking for it by OBJTYPE_FLG_HPBAR;
+// missing hp is dark, any hp left shows at least a bit
+static void draw_hpbar(hsObject obj) {
+
+    hcsObjType otype = obj->type;
+    unsigned int left, start;
+    unsigned char w, filled, color;
+
+    if (!(otype->flags & OBJTYPE_FLG_HPBAR))
+        return;
+
+    if (obj->flags & (OBJ_FLG_HIDDEN | OBJ_FLG_DYING) || obj->damage_total >= otype->hp)
+        return;
+
+    if (world2grid(obj->pos.y) == 0)
+        return;
+
+    w       = obj->physical->dim.x;
+    left    = otype->hp - obj->damage_total;
+    filled  = (unsigned char)(((unsigned long)left * w + otype->hp - 1) / otype->hp);
+    start   = screen_offset_xy(world2grid(obj->pos.x) + VIEWGRID_SCREEN_X, world2grid(obj->pos.y) - 1 + VIEWGRID_SCREEN_Y);
+
+    if (left * 2 > otype->hp)
+        color = 0x0a;
+    else
+    if (left * 4 > otype->hp)
+        color = 0x0e;
+    else
+        color = 0x0c;
+
+    screen_fill_region('-', color, start, filled, 1);
+    if (filled < w)
+        screen_fill_region('-', 0x08, start + filled * 2, w - filled, 1);
+}
+
 unsigned int d1[64], d2[64];
 unsigned char dd;
 unsigned char debug;
@@ -268,6 +303,10 @@ void progress(unsigned char cycle) {
         d2[dd]++;
 
     screen_fill_region(' ', 0, screen_offset_xy(VIEWGRID_SCREEN_X, VIEWGRID_SCREEN_Y), VIEWGRID_WIDTH, VIEWGRID_HEIGHT);
+
+    // draw the hp bars first, so they don't cover objects flying around
+    while ((obj = objpool_next(obj)) != NULL)
+        draw_hpbar(obj);
 
     // draw the objects
     while ((obj = objpool_next(obj)) != NULL) {
