@@ -73,13 +73,14 @@ static const sObjType ot_phantom_spark = {
 
 static const sTurret turret_phantom_eye = TURRET_GRID(2, 3, 0, PHANTOM_SPARK_SPEED, &ot_phantom_spark);
 
-// fire spark aimed at the player's current position
-static void phantom_aim(hsObject obj) {
+// fire spark aimed at the player's current position, "spread" is added to
+// the aimed horizontal speed (for fans of sparks around the aimed one)
+static void phantom_aim(hsObject obj, hcsTurret turret, int spread) {
 
     hsObject spark;
     int dx, dy;
 
-    if ((spark = fire_turret(obj, &turret_phantom_eye)) == NULL)
+    if ((spark = fire_turret(obj, turret)) == NULL)
         return;
 
     dx = (int)world2grid(player->pos.x) + player->physical->dim.x / 2 - (int)world2grid(spark->pos.x);
@@ -87,7 +88,7 @@ static void phantom_aim(hsObject obj) {
     if (dy < 1)
         dy = 1;
 
-    spark->speed.x = adjust(dx * PHANTOM_SPARK_SPEED / dy, -PHANTOM_SPARK_SPEED, PHANTOM_SPARK_SPEED);
+    spark->speed.x = adjust(dx * PHANTOM_SPARK_SPEED / dy + spread, -PHANTOM_SPARK_SPEED, PHANTOM_SPARK_SPEED);
 }
 
 static void phantom_behave(hsObject obj) {
@@ -133,7 +134,7 @@ static void phantom_behave(hsObject obj) {
         obj->speed.x = (dx > 0) ? 3 : ((dx < 0) ? -3 : 0);
 
         if (obj->ttl == 30 || obj->ttl == 20 || obj->ttl == 10)
-            phantom_aim(obj);
+            phantom_aim(obj, &turret_phantom_eye, 0);
 
         if (obj->ttl == 0) {
 
