@@ -18,6 +18,7 @@ d_supply.obj \
 data.obj \
 input.obj \
 objpool.obj \
+scenario.obj \
 screen.obj \
 shooter.obj
 
