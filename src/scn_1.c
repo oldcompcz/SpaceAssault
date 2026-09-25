@@ -54,7 +54,7 @@ static const sDisplayText text_outro[] = {
     { { 27, 16 }, 0x07, "THE END" }
 };
 
-const sScenarioPoint g_scenario[] = {
+const sScenarioPoint g_scenario_original[] = {
 
     // intro screen
     SCPOINT_MACRO_DELAY(1),

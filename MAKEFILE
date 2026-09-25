@@ -16,10 +16,10 @@ d_grch.obj \
 d_octo.obj \
 d_phant.obj \
 d_supply.obj \
-data.obj \
 input.obj \
 objpool.obj \
 scenario.obj \
+scn_1.obj \
 screen.obj \
 shooter.obj
 

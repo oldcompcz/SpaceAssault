@@ -29,7 +29,7 @@
 #define BAR_WIDTH                       16
 #define BAR_POS_INTEGRITY               5
 
-extern const sScenarioPoint g_scenario[];
+extern const sScenarioPoint g_scenario_original[];
 
 hsObject g_map[VIEWGRID_HEIGHT][VIEWGRID_WIDTH][2]; // 0 is ally, 1 is foe
 hsObject player, shield;
@@ -40,6 +40,20 @@ unsigned char scpoint_repeat;
 hcsDisplayText show_text_first;
 unsigned char show_text_count;
 unsigned char paused;
+
+typedef struct sScenarioInfo {
+
+    const char *alias;
+    hcsScenarioPoint entry;
+
+} sScenarioInfo, *hsScenarioInfo;
+typedef const sScenarioInfo *hcsScenarioInfo;
+
+// scenarios selectable by the command line argument (case insensitive),
+// "start.exe" alone (or with unknown argument) plays the main one
+static const sScenarioInfo scenarios[] = {
+    { "1",      g_scenario_original },
+};
 
 /*
 static FILE *fp = NULL;
@@ -287,9 +301,10 @@ void show_bar(char x, char y, char total, char current) {
     screen_print_bar(x, y, BAR_WIDTH, (BAR_WIDTH * current + BAR_WIDTH / 2) / total);
 }
 
-int main(/*int argc, char *argv[]*/) {
+int main(int argc, char *argv[]) {
 
     hsObject emit;
+    hcsScenarioInfo scinfo;
     unsigned int cycle;
     unsigned char event;
 
@@ -328,7 +343,21 @@ int main(/*int argc, char *argv[]*/) {
     
     input_init();
 
-    scpoint = &g_scenario[0];
+    // determine scenario to play
+    scpoint = &g_scenario_original[0];
+    if (argc > 1) {
+
+        for (scinfo = &scenarios[0]; scinfo < &scenarios[dimof(scenarios)]; scinfo++) {
+
+            if (stricmp(argv[1], scinfo->alias))
+                continue;
+
+            scpoint = scinfo->entry;
+            break;
+        }
+    }
+
+    // initialize scenario state
     scpoint_timer = 0;
     scpoint_repeat = 0;
     show_text_first = NULL;
