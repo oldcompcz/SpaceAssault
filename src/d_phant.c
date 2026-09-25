@@ -153,6 +153,12 @@ static void phantom_behave(hsObject obj) {
             obj->ttl        = 16 + rand() % 24;
         }
     }
+
+    // don't draw the blank frames, they would wipe out bullets flying through
+    if (obj->physical == &phy_phantom_cloaked)
+        obj->flags |= OBJ_FLG_HIDDEN;
+    else
+        obj->flags &= ~OBJ_FLG_HIDDEN;
 }
 
 static void phantom_die(hsObject obj) {

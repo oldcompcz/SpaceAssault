@@ -171,6 +171,7 @@ typedef struct sScenarioPoint {
 #define OBJ_FLG_DESTROY     0x01            // mark object to be garbage collected
 #define OBJ_FLG_INACTIVE    0x02            // object was just added and is not yet to be considered
 #define OBJ_FLG_DYING       0x04            // object already dead, just in death animation
+#define OBJ_FLG_HIDDEN      0x08            // object is not drawn (blank cells would wipe out what's under them)
 
 // game object instance
 typedef struct sObject {

@@ -259,6 +259,9 @@ void progress(unsigned char cycle) {
     while ((obj = objpool_next(obj)) != NULL) {
 
         obj->flags &= ~OBJ_FLG_INACTIVE;
+
+        if (obj->flags & OBJ_FLG_HIDDEN)
+            continue;
     
         otype = obj->type;
         otphy = obj->physical;
@@ -424,7 +427,7 @@ int main(/*int argc, char *argv[]*/) {
         
             // handle movements
             player->speed.x = 0 + (uifn_hold[UIFN_LEFT] ? -8 : 0) + (uifn_hold[UIFN_RIGHT] ? 8 : 0);
-    //        player->speed.y = 0 + (uifn_hold[UIFN_UP] ? -8 : 0) + (uifn_hold[UIFN_DOWN] ? 8 : 0);
+            //player->speed.y = 0 + (uifn_hold[UIFN_UP] ? -8 : 0) + (uifn_hold[UIFN_DOWN] ? 8 : 0);
 
             // handle cannons and lasers
             if (player_weapon_delay > 0) {
