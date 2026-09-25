@@ -1,7 +1,9 @@
 *~
 *.o
 *.obj
+*.OBJ
 *.exe
+*.EXE
 *.res
 stderr.txt
 stdout.txt
