@@ -50,6 +50,9 @@ extern const sObjType ot_alien_bible;
 
 void scpt_emit_at_pos(hcsScenarioPoint scpoint, unsigned char repeat);
 
+#define SCPOINT_SUB_TEXT(t, c)      (t), (c)
+#define SCPOINT_SUB_TEXT_NONE       NULL, 0
+
 //                                          type,                       delay,  repeat, tick,   text,                   emit,   pos
 #define SCPOINT_MACRO_TEXT(t, c, d)         { SCPOINT_TYPE_NONE,        (d),    0,      NULL,   SCPOINT_SUB_TEXT(t, c), NULL,   { 0, 0 } }
 #define SCPOINT_MACRO_DELAY(d)              { SCPOINT_TYPE_NONE,        (d),    0,      NULL,   SCPOINT_SUB_TEXT_NONE,  NULL,   { 0, 0 } }
