@@ -187,6 +187,261 @@ const sObjType ot_phantom = {
 };
 
 // ---------------------------------------------------------------------------
+// phantom lord - boss version, same cloaking cycle, but it first appears where
+// it was emitted, summons phantoms at it's sides while emerging, fires aimed
+// fans of sparks and gets angrier (shorter cloaks, more fans) when wounded
+// ---------------------------------------------------------------------------
+
+#define PHANTOM_LORD_MAX_MINIONS        3
+#define PHANTOM_LORD_DEATH_PHASE        12      // ticks per pair of shuffled crumble frames
+#define PHANTOM_LORD_DEATH_TICKS        (3 * PHANTOM_LORD_DEATH_PHASE)
+
+static const sPhysical phy_phantom_lord = {
+    { 9, 5 },
+    {
+        '\0',   0x00,   '\0',   0x00,   '/',    0x03,   '^',    0x0e,   '^',    0x0e,   '^',    0x0e,   '\\',   0x03,   '\0',   0x00,   '\0',   0x00,
+        '\0',   0x00,   '/',    0x03,   '~',    0x0b,   '~',    0x0b,   '~',    0x0b,   '~',    0x0b,   '~',    0x0b,   '\\',   0x03,   '\0',   0x00,
+        '(',    0x03,   '<',    0x0b,   '<',    0x03,   '(',    0x0b,   '@',    0x0d,   ')',    0x0b,   '>',    0x03,   '>',    0x0b,   ')',    0x03,
+        '\0',   0x00,   '\\',   0x03,   '\0',   0x00,   'v',    0x0b,   'v',    0x0b,   'v',    0x0b,   '\0',   0x00,   '/',    0x03,   '\0',   0x00,
+        '\0',   0x00,   '\0',   0x00,   '~',    0x03,   '\0',   0x00,   '~',    0x03,   '\0',   0x00,   '~',    0x03,   '\0',   0x00,   '\0',   0x00
+    }
+};
+static const sPhysical phy_phantom_lord_hit = {
+    { 9, 5 },
+    {
+        '\0',   0x00,   '\0',   0x00,   '/',    0x0f,   '^',    0x0f,   '^',    0x0f,   '^',    0x0f,   '\\',   0x0f,   '\0',   0x00,   '\0',   0x00,
+        '\0',   0x00,   '/',    0x0f,   '~',    0x0f,   '~',    0x0f,   '~',    0x0f,   '~',    0x0f,   '~',    0x0f,   '\\',   0x0f,   '\0',   0x00,
+        '(',    0x0f,   '<',    0x0f,   '<',    0x0f,   '(',    0x0f,   '@',    0x0d,   ')',    0x0f,   '>',    0x0f,   '>',    0x0f,   ')',    0x0f,
+        '\0',   0x00,   '\\',   0x0f,   '\0',   0x00,   'v',    0x0f,   'v',    0x0f,   'v',    0x0f,   '\0',   0x00,   '/',    0x0f,   '\0',   0x00,
+        '\0',   0x00,   '\0',   0x00,   '~',    0x0f,   '\0',   0x00,   '~',    0x0f,   '\0',   0x00,   '~',    0x0f,   '\0',   0x00,   '\0',   0x00
+    }
+};
+static const sPhysical phy_phantom_lord_shimmer = {
+    { 9, 5 },
+    {
+        '\0',   0x00,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '^',    0x06,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00,
+        '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,
+        ':',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '@',    0x05,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   ':',    0x08,
+        '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,
+        '\0',   0x00,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00
+    }
+};
+static const sPhysical phy_phantom_lord_cloaked = {
+    { 9, 5 },
+    { '\0' }
+};
+
+// crumbling frames, from dense cracked shape to scattered debris
+static const sPhysical phy_phantom_lord_burst[] = {
+    {
+        { 9, 5 },
+        {
+            '\0',   0x00,   '\0',   0x00,   '*',    0x0e,   '@',    0x0f,   '#',    0x0f,   '&',    0x0f,   '@',    0x0b,   '\0',   0x00,   '\0',   0x00,
+            '\0',   0x00,   '@',    0x0f,   '&',    0x0f,   '*',    0x0e,   '%',    0x0b,   '*',    0x0e,   '#',    0x0f,   '#',    0x0f,   '\0',   0x00,
+            '@',    0x0f,   '&',    0x0e,   '%',    0x0b,   '&',    0x0f,   '#',    0x0e,   '%',    0x0e,   '%',    0x0b,   '*',    0x0f,   '#',    0x0f,
+            '\0',   0x00,   '*',    0x0f,   '\0',   0x00,   '%',    0x0f,   '@',    0x0b,   '&',    0x0f,   '\0',   0x00,   '&',    0x0f,   ':',    0x03,
+            '\0',   0x00,   '\0',   0x00,   '*',    0x0b,   '\0',   0x00,   '&',    0x0f,   '\0',   0x00,   '#',    0x0b,   '\0',   0x00,   '\0',   0x00
+        }
+    },
+    {
+        { 9, 5 },
+        {
+            '`',    0x03,   '\0',   0x00,   '+',    0x0b,   '%',    0x03,   '#',    0x0e,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,
+            '\0',   0x00,   '*',    0x0f,   '%',    0x0b,   'x',    0x0e,   'x',    0x03,   '+',    0x0e,   '+',    0x0e,   '\0',   0x00,   '\0',   0x00,
+            '*',    0x0b,   '*',    0x0e,   'x',    0x0e,   'x',    0x0e,   '\0',   0x00,   '\0',   0x00,   '%',    0x0b,   '+',    0x0e,   '\0',   0x00,
+            '\0',   0x00,   '+',    0x03,   '\0',   0x00,   '\0',   0x00,   '%',    0x03,   '#',    0x0e,   ':',    0x08,   '*',    0x0b,   '\0',   0x00,
+            '\0',   0x00,   '\0',   0x00,   '%',    0x0f,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '#',    0x0f,   '\0',   0x00,   '\0',   0x00
+        }
+    },
+    {
+        { 9, 5 },
+        {
+            '\0',   0x00,   '\0',   0x00,   ':',    0x0b,   ':',    0x08,   '\0',   0x00,   ':',    0x08,   ':',    0x0e,   '.',    0x08,   '\0',   0x00,
+            '\0',   0x00,   '.',    0x0b,   ':',    0x0b,   '*',    0x08,   '+',    0x08,   '%',    0x0e,   '\0',   0x00,   '%',    0x08,   '\0',   0x00,
+            '+',    0x03,   '*',    0x03,   '%',    0x03,   '.',    0x08,   ':',    0x03,   '+',    0x0b,   '\0',   0x00,   '*',    0x03,   '\0',   0x00,
+            '\0',   0x00,   '+',    0x0b,   ':',    0x08,   ':',    0x0e,   '+',    0x0b,   ':',    0x08,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,
+            '\0',   0x00,   ',',    0x08,   '+',    0x0b,   '\0',   0x00,   '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00
+        }
+    },
+    {
+        { 9, 5 },
+        {
+            '\0',   0x00,   '.',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   ':',    0x08,
+            '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   ',',    0x08,   ':',    0x06,   '\0',   0x00,   '\0',   0x00,   ',',    0x03,
+            '\0',   0x00,   '.',    0x08,   ',',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   '.',    0x06,   ':',    0x08,   '\0',   0x00,
+            '`',    0x03,   '\0',   0x00,   '.',    0x03,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   ':',    0x03,   '\0',   0x00,   ',',    0x08,
+            ':',    0x08,   '\0',   0x00,   '\0',   0x00,   '\0',   0x00,   ',',    0x06,   '`',    0x03,   '\0',   0x00,   ',',    0x03,   '\0',   0x00
+        }
+    }
+};
+
+static const sTurret turret_phantom_lord_eye = TURRET_GRID(4, 5, 0, PHANTOM_SPARK_SPEED, &ot_phantom_spark);
+
+// count phantoms still alive, so the lord doesn't flood the pool with them
+static unsigned char phantom_lord_minions(void) {
+
+    hsObject obj;
+    unsigned char count;
+
+    obj = NULL;
+    count = 0;
+    while ((obj = objpool_next(obj)) != NULL)
+        if (obj->type == &ot_phantom && !(obj->flags & OBJ_FLG_DYING))
+            count++;
+
+    return count;
+}
+
+// summon phantom next to the lord, already emerging
+static void phantom_lord_summon(hsObject obj, unsigned char left) {
+
+    hsObject minion;
+
+    if (phantom_lord_minions() >= PHANTOM_LORD_MAX_MINIONS)
+        return;
+
+    if ((minion = objpool_alloc(&ot_phantom)) == NULL)
+        return;
+
+    if (left && obj->pos.x >= grid2world(6))
+        minion->pos.x = obj->pos.x - grid2world(6);
+    else
+        minion->pos.x = obj->pos.x + grid2world(obj->physical->dim.x + 1);
+
+    minion->pos.y       = obj->pos.y + grid2world(1);
+    minion->state[0]    = PHANTOM_ST_EMERGE;
+    minion->ttl         = 10;
+}
+
+// fan of three sparks, the middle one aimed at the player
+static void phantom_lord_fan(hsObject obj) {
+
+    phantom_aim(obj, &turret_phantom_lord_eye, -4);
+    phantom_aim(obj, &turret_phantom_lord_eye, 0);
+    phantom_aim(obj, &turret_phantom_lord_eye, +4);
+}
+
+static void phantom_lord_behave(hsObject obj) {
+
+    int dx;
+    unsigned char angry;
+
+    // long crumbling death, so it can't be mistaken for fading away: three
+    // phases, each shuffling a pair of neighbouring frames (1+2, 2+3, 3+4)
+    if (obj->flags & OBJ_FLG_DYING) {
+
+        obj->physical = &phy_phantom_lord_burst[(PHANTOM_LORD_DEATH_TICKS - obj->ttl) / PHANTOM_LORD_DEATH_PHASE + rand() % 2];
+        return;
+    }
+
+    angry = (obj->damage_total >= obj->type->hp / 2);
+
+    if (obj->state[0] == PHANTOM_ST_CLOAKED) {
+
+        obj->physical = &phy_phantom_lord_cloaked;
+
+        if (obj->ttl == 0) {
+
+            // first appearance is at the emit position, then anywhere
+            if (obj->state[1] == 0) {
+
+                obj->state[1] = 1;
+            }
+            else {
+
+                obj->pos.x  = grid2world(rand() % (VIEWGRID_WIDTH - obj->physical->dim.x));
+                obj->pos.y  = grid2world(2 + rand() % 12);
+            }
+
+            obj->speed.x    = 0;
+            obj->speed.y    = 0;
+            obj->state[0]   = PHANTOM_ST_EMERGE;
+            obj->ttl        = 16;
+        }
+    }
+    else
+    if (obj->state[0] == PHANTOM_ST_EMERGE) {
+
+        obj->physical = (obj->ttl & 2) ? &phy_phantom_lord_shimmer : &phy_phantom_lord_cloaked;
+
+        if (obj->ttl == 8) {
+
+            phantom_lord_summon(obj, 1);
+            if (angry)
+                phantom_lord_summon(obj, 0);
+        }
+
+        if (obj->ttl == 0) {
+
+            obj->state[0]   = PHANTOM_ST_VISIBLE;
+            obj->ttl        = 64;
+        }
+    }
+    else
+    if (obj->state[0] == PHANTOM_ST_VISIBLE) {
+
+        obj->physical = &phy_phantom_lord;
+
+        // drift above the player, slower than the small ones
+        dx = (int)world2grid(player->pos.x) + player->physical->dim.x / 2 - ((int)world2grid(obj->pos.x) + obj->physical->dim.x / 2);
+        obj->speed.x = (dx > 0) ? 2 : ((dx < 0) ? -2 : 0);
+
+        if (obj->ttl == 56 || obj->ttl == 40 || obj->ttl == 24 || obj->ttl == 8)
+            phantom_lord_fan(obj);
+        else
+        if (angry && (obj->ttl == 48 || obj->ttl == 32 || obj->ttl == 16))
+            phantom_lord_fan(obj);
+
+        if (obj->ttl == 0) {
+
+            obj->speed.x    = 0;
+            obj->state[0]   = PHANTOM_ST_FADE;
+            obj->ttl        = 10;
+        }
+    }
+    else
+    if (obj->state[0] == PHANTOM_ST_FADE) {
+
+        obj->physical = (obj->ttl & 2) ? &phy_phantom_lord_shimmer : &phy_phantom_lord;
+
+        if (obj->ttl == 0) {
+
+            obj->state[0]   = PHANTOM_ST_CLOAKED;
+            obj->ttl        = angry ? (8 + rand() % 8) : (24 + rand() % 16);
+        }
+    }
+
+    // don't draw the blank frames, they would wipe out bullets flying through
+    if (obj->physical == &phy_phantom_lord_cloaked)
+        obj->flags |= OBJ_FLG_HIDDEN;
+    else
+        obj->flags &= ~OBJ_FLG_HIDDEN;
+}
+
+static void phantom_lord_die(hsObject obj) {
+
+    obj->physical = &phy_phantom_lord_burst[0];
+    obj->speed.x = 0;
+    obj->speed.y = 0;
+    obj->ttl = PHANTOM_LORD_DEATH_TICKS;
+}
+
+static void phantom_lord_hit(hsObject obj) {
+
+    obj->physical = &phy_phantom_lord_hit;
+}
+
+const sObjType ot_phantom_lord = {
+    &phy_phantom_lord_cloaked,
+    OBJTYPE_NAT_FOE_OBJ,
+    90,
+    phantom_lord_behave,
+    phantom_lord_die,
+    phantom_lord_hit,
+    NULL
+};
+
+// ---------------------------------------------------------------------------
 // mirage - phantom which never comes alone, every time it emerges it brings
 // two illusions spread across the view; illusions are neutral (bullets fly
 // right through them) and never fire, so the only way to tell the real one

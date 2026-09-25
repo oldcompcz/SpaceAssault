@@ -32,6 +32,7 @@ extern const sObjType ot_grchkrx_bee;
 extern const sObjType ot_grchkrx_queen;
 extern const sObjType ot_alien_bible;
 extern const sObjType ot_phantom;
+extern const sObjType ot_phantom_lord;
 extern const sObjType ot_mirage;
 
 extern hsObject player;

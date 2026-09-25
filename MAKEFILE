@@ -14,6 +14,7 @@ d_flank.obj \
 d_gen.obj \
 d_grch.obj \
 d_octo.obj \
+d_phant.obj \
 d_supply.obj \
 data.obj \
 input.obj \
