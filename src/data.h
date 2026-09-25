@@ -31,6 +31,9 @@ extern const sObjType ot_flank;
 extern const sObjType ot_grchkrx_bee;
 extern const sObjType ot_grchkrx_queen;
 extern const sObjType ot_alien_bible;
+extern const sObjType ot_phantom;
+
+extern hsObject player;
 
 #define OCTO_ST_CLW_GO_RIGHT            0
 #define OCTO_ST_CLW_GO_DOWN             1
