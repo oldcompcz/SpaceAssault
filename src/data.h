@@ -33,6 +33,7 @@ extern const sObjType ot_grchkrx_larva;
 extern const sObjType ot_grchkrx_builder;
 extern const sObjType ot_grchkrx_wax;
 extern const sObjType ot_grchkrx_stinger;
+extern const sObjType ot_grchkrx_empress;
 extern const sObjType ot_grchkrx_queen;
 extern const sObjType ot_alien_bible;
 extern const sObjType ot_phantom;

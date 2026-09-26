@@ -482,7 +482,7 @@ int main(int argc, char *argv[]) {
                         emit = NULL;
                         while ((emit = objpool_next(emit)) != NULL) {
                         
-                            if (emit->type->nature != OBJTYPE_NAT_FOE_OBJ)
+                            if (emit->type->nature != OBJTYPE_NAT_FOE_OBJ || (emit->type->flags & OBJTYPE_FLG_NOWAIT))
                                 continue;
                                 
                             scpoint_timer = scpoint->delay;

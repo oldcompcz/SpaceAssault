@@ -218,6 +218,114 @@ static const hcsPhysical phy_grchkrx_wax_stages[3][2] = {
     { &phy_grchkrx_wax_2, &phy_grchkrx_wax_2_hit },
 };
 
+// grchkrx empress - huge queen with a crown and antennae flashing before her
+// big moves; tears her wings off halfway through, getting down to business
+static const sPhysical phy_grchkrx_empress = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x04,   '\0',   0x00,   '\\',   0x0e,   '/',    0x0e,   '^',    0x0e,   '^',    0x0e,   '\\',   0x0e,   '/',    0x0e,   '\0',   0x00,   '/',    0x04,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x04,   '/',    0x04,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x04,   '_',    0x04,   '\0',   0x00,
+        '#',    0x04,   '=',    0x04,   '#',    0x04,   ' ',    0x04,   '_',    0x04,   '_',    0x04,   '_',    0x04,   '_',    0x04,   ' ',    0x04,   '#',    0x04,   '=',    0x04,   '#',    0x04,
+        '|',    0x04,   ' ',    0x04,   '|',    0x04,   ' ',    0x04,   '|',    0x04,   '!',    0x09,   '!',    0x09,   '|',    0x04,   ' ',    0x04,   '|',    0x04,   ' ',    0x04,   '|',    0x04,
+        '\0',   0x00,   '\\',   0x04,   '/',    0x04,   '\0',   0x00,   '\\',   0x04,   'V',    0x09,   'V',    0x09,   '/',    0x04,   '\0',   0x00,   '\\',   0x04,   '/',    0x04,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_hit = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x0c,   '\0',   0x00,   '\\',   0x0e,   '/',    0x0e,   '^',    0x0e,   '^',    0x0e,   '\\',   0x0e,   '/',    0x0e,   '\0',   0x00,   '/',    0x0c,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x0c,   '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,   '_',    0x0c,   '\0',   0x00,
+        '#',    0x0c,   '=',    0x0c,   '#',    0x0c,   ' ',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   ' ',    0x0c,   '#',    0x0c,   '=',    0x0c,   '#',    0x0c,
+        '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   '!',    0x09,   '!',    0x09,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,
+        '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   'V',    0x09,   'V',    0x09,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_flash = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x0c,   '\0',   0x00,   '\\',   0x0f,   '/',    0x0f,   '^',    0x0f,   '^',    0x0f,   '\\',   0x0f,   '/',    0x0f,   '\0',   0x00,   '/',    0x0c,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x0c,   '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,   '_',    0x0c,   '\0',   0x00,
+        '#',    0x0c,   '=',    0x0c,   '#',    0x0c,   ' ',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   ' ',    0x0c,   '#',    0x0c,   '=',    0x0c,   '#',    0x0c,
+        '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   '!',    0x0f,   '!',    0x0f,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,
+        '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   'V',    0x0f,   'V',    0x0f,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_torn = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x04,   '\0',   0x00,   '\\',   0x0e,   '/',    0x0e,   '^',    0x0e,   '^',    0x0e,   '\\',   0x0e,   '/',    0x0e,   '\0',   0x00,   '/',    0x04,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x04,   '/',    0x04,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x04,   '_',    0x04,   '\0',   0x00,
+        '\'',   0x08,   ',',    0x08,   '.',    0x08,   ' ',    0x04,   '_',    0x04,   '_',    0x04,   '_',    0x04,   '_',    0x04,   ' ',    0x04,   '.',    0x08,   ',',    0x08,   '\'',   0x08,
+        ':',    0x08,   ' ',    0x04,   '|',    0x04,   ' ',    0x04,   '|',    0x04,   '!',    0x09,   '!',    0x09,   '|',    0x04,   ' ',    0x04,   '|',    0x04,   ' ',    0x04,   ':',    0x08,
+        '\0',   0x00,   '\\',   0x04,   '/',    0x04,   '\0',   0x00,   '\\',   0x04,   'V',    0x09,   'V',    0x09,   '/',    0x04,   '\0',   0x00,   '\\',   0x04,   '/',    0x04,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_torn_hit = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x0c,   '\0',   0x00,   '\\',   0x0e,   '/',    0x0e,   '^',    0x0e,   '^',    0x0e,   '\\',   0x0e,   '/',    0x0e,   '\0',   0x00,   '/',    0x0c,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x0c,   '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,   '_',    0x0c,   '\0',   0x00,
+        '\'',   0x08,   ',',    0x08,   '.',    0x08,   ' ',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   ' ',    0x0c,   '.',    0x08,   ',',    0x08,   '\'',   0x08,
+        ':',    0x08,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   '!',    0x09,   '!',    0x09,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   ':',    0x08,
+        '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   'V',    0x09,   'V',    0x09,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_torn_flash = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x0c,   '\0',   0x00,   '\\',   0x0f,   '/',    0x0f,   '^',    0x0f,   '^',    0x0f,   '\\',   0x0f,   '/',    0x0f,   '\0',   0x00,   '/',    0x0c,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x0c,   '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,   '_',    0x0c,   '\0',   0x00,
+        '\'',   0x08,   ',',    0x08,   '.',    0x08,   ' ',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   '_',    0x0c,   ' ',    0x0c,   '.',    0x08,   ',',    0x08,   '\'',   0x08,
+        ':',    0x08,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   '!',    0x0f,   '!',    0x0f,   '|',    0x0c,   ' ',    0x0c,   '|',    0x0c,   ' ',    0x0c,   ':',    0x08,
+        '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   'V',    0x0f,   'V',    0x0f,   '/',    0x0c,   '\0',   0x00,   '\\',   0x0c,   '/',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_empress_dying = {
+    { 12, 5 },
+    {
+        '\0',   0x00,   '\\',   0x08,   '\0',   0x00,   '\\',   0x08,   '/',    0x08,   '.',    0x08,   '.',    0x08,   '\\',   0x08,   '/',    0x08,   '\0',   0x00,   '/',    0x08,   '\0',   0x00,
+        '\0',   0x00,   '_',    0x08,   '/',    0x08,   '*',    0x08,   '*',    0x08,   '*',    0x08,   '*',    0x08,   '*',    0x08,   '*',    0x08,   '\\',   0x08,   '_',    0x08,   '\0',   0x00,
+        '\'',   0x08,   ',',    0x08,   '.',    0x08,   ' ',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,   '_',    0x08,   ' ',    0x08,   '.',    0x08,   ',',    0x08,   '\'',   0x08,
+        ':',    0x08,   ' ',    0x08,   '|',    0x08,   ' ',    0x08,   '|',    0x08,   ':',    0x08,   ':',    0x08,   '|',    0x08,   ' ',    0x08,   '|',    0x08,   ' ',    0x08,   ':',    0x08,
+        '\0',   0x00,   '\\',   0x08,   '/',    0x08,   '\0',   0x00,   '\\',   0x08,   'v',    0x08,   'v',    0x08,   '/',    0x08,   '\0',   0x00,   '\\',   0x08,   '/',    0x08,   '\0',   0x00
+    }
+};
+
+static const sPhysical phy_grchkrx_honey = PHYSICAL_1X1('\x07', 0x0e);
+
+static const sObjType ot_grchkrx_honey = {
+    &phy_grchkrx_honey,
+    OBJTYPE_NAT_FOE_BULLET,
+    OBJTYPE_FLG_NONE,
+    5,
+    NULL,
+    NULL,
+    NULL,
+    cb_deal_die
+};
+
+// royal fan - pairs spreading wider and wider
+static const sTurret turret_grchkrx_empress_fan[5][2] = {
+    { TURRET_GRID(5, 5, -1, 10, &ot_foe_ball), TURRET_GRID(6, 5, +1, 10, &ot_foe_ball) },
+    { TURRET_GRID(5, 5, -2,  9, &ot_foe_ball), TURRET_GRID(6, 5, +2,  9, &ot_foe_ball) },
+    { TURRET_GRID(5, 5, -3,  9, &ot_foe_ball), TURRET_GRID(6, 5, +3,  9, &ot_foe_ball) },
+    { TURRET_GRID(5, 5, -4,  8, &ot_foe_ball), TURRET_GRID(6, 5, +4,  8, &ot_foe_ball) },
+    { TURRET_GRID(5, 5, -5,  7, &ot_foe_ball), TURRET_GRID(6, 5, +5,  7, &ot_foe_ball) },
+};
+
+// honey drops, horizontal speed gets aimed at the player
+#define EMPRESS_HONEY_SPEED             8
+static const sTurret turret_grchkrx_empress_honey = TURRET_GRID(5, 5, 0, EMPRESS_HONEY_SPEED, &ot_grchkrx_honey);
+
+// royal sting - spread of lasers from right above the player
+static const sTurret turret_grchkrx_empress_sting[5] = {
+    TURRET_GRID(5, 5, -6, 14, &ot_foe_laser),
+    TURRET_GRID(5, 5, -3, 14, &ot_foe_laser),
+    TURRET_GRID(5, 5,  0, 16, &ot_foe_laser),
+    TURRET_GRID(6, 5, +3, 14, &ot_foe_laser),
+    TURRET_GRID(6, 5, +6, 14, &ot_foe_laser),
+};
+
 static const sPhysical phy_grchkrx_queen = {
     { 8, 4 },
     {
@@ -391,7 +499,7 @@ void cb_larva_hit(hsObject obj) {
 #define WAX_HP                          48
 #define WAX_REPAIR_HP                   2
 #define WAX_REPAIR_PERIOD               4       // power of 2
-#define WAX_MELT_HP                     4
+#define WAX_MELT_HP                     2
 
 #define WAX_IS_LIVE(p)                  ((p)->type == &ot_grchkrx_wax && !((p)->flags & (OBJ_FLG_DYING | OBJ_FLG_DESTROY)))
 
@@ -691,6 +799,392 @@ void cb_stinger_hit(hsObject obj) {
     obj->physical = &phy_grchkrx_stinger_hit;
 }
 
+// empress drifts along the top, now and then pausing or turning back and
+// flinching away when hit; her attack loop is royal fan, burst of aimed honey
+// and laying a larva (antennae flash first); at half hp she tears her wings
+// off, descends and sweeps side to side with the royal fan followed by a couple
+// of laser spreads, laying stingers above herself, then hunts the player down for a royal sting - locks on (long flash), dives down
+// to EMPRESS_STING_GAP rows above the player and stings with a laser spread,
+// then slides after the player for another sting or two (short flash) and climbs
+#define EMPRESS_ST_DRIFT                1
+#define EMPRESS_ST_DESCEND              2
+#define EMPRESS_ST_SWEEP                3
+#define EMPRESS_ST_HUNT                 4
+#define EMPRESS_ST_AIM                  5
+#define EMPRESS_ST_DIVE                 6
+#define EMPRESS_ST_STING                7
+#define EMPRESS_ST_SLIDE                8
+#define EMPRESS_ST_FLOOR_AIM            9
+#define EMPRESS_ST_CLIMB                10
+
+#define EMPRESS_HP                      280
+#define EMPRESS_DRIFT_SPEED             2
+#define EMPRESS_FLINCH_SPEED            5       // wings on, a hit makes her dart away from the player's side
+#define EMPRESS_FLINCH_TICKS            12
+#define EMPRESS_FLINCH_COOLDOWN         48      // counted from the flinch start, in ttl
+#define EMPRESS_CYCLE                   64      // wings on attack loop, in ticks, royal fan starting it
+#define EMPRESS_HONEY_AT                24      // loop tick starting the honey burst
+#define EMPRESS_HONEY_BURST             5       // drops, 3 ticks apart
+#define EMPRESS_EGG_AT                  52      // loop tick laying a larva, antennae flash for 8 ticks before
+#define EMPRESS_MAX_LARVAE              4
+#define EMPRESS_TORN_ROW                24      // row she sweeps along with wings torn off, below the wax barrier
+#define EMPRESS_DESCEND_SPEED           3
+#define EMPRESS_SWEEP_SPEED             4
+#define EMPRESS_SWEEP_FAN_AT            8       // sweep loop tick starting the royal fan
+#define EMPRESS_LASERS_AT               28      // sweep loop ticks firing laser spreads after the fan
+#define EMPRESS_LASERS_AT2              31
+#define EMPRESS_BROOD_AT                34      // sweep loop tick laying a stinger, antennae flash for 8 ticks before
+#define EMPRESS_MAX_STINGERS            2
+#define EMPRESS_HUNT_AT                 38      // sweep loop tick to start hunting
+#define EMPRESS_HUNT_SPEED              5
+#define EMPRESS_HUNT_TICKS              32      // gives up aligning and stings anyway
+#define EMPRESS_AIM_TICKS               16
+#define EMPRESS_DIVE_SPEED              10
+#define EMPRESS_STING_GAP               3       // free rows kept between her and the player when stinging
+#define EMPRESS_STING_TICKS             6       // resting at the floor after each sting
+#define EMPRESS_STING_CHAIN             2       // extra stings along the floor, 1 to this many
+#define EMPRESS_SLIDE_SPEED             6
+#define EMPRESS_SLIDE_TICKS             16      // gives up aligning and stings anyway
+#define EMPRESS_FLOOR_AIM_TICKS         8
+#define EMPRESS_CLIMB_SPEED             5
+
+#define EMPRESS_FRM_NORMAL              0
+#define EMPRESS_FRM_HIT                 1
+#define EMPRESS_FRM_FLASH               2
+
+// by wings (state[3] - 0 on, 1 torn off) and EMPRESS_FRM_*
+static const hcsPhysical phy_grchkrx_empress_frames[2][3] = {
+    { &phy_grchkrx_empress, &phy_grchkrx_empress_hit, &phy_grchkrx_empress_flash },
+    { &phy_grchkrx_empress_torn, &phy_grchkrx_empress_torn_hit, &phy_grchkrx_empress_torn_flash },
+};
+
+static void empress_frame(hsObject obj, unsigned char frame) {
+
+    obj->physical = phy_grchkrx_empress_frames[obj->state[3]][frame];
+}
+
+// royal fan fires its pairs one by one, every 4 ticks from its "step" 0
+static void empress_fan(hsObject obj, int step) {
+
+    if (step < 0 || step >= 4 * (int)dimof(turret_grchkrx_empress_fan) || (step & 3))
+        return;
+
+    fire_turret(obj, &turret_grchkrx_empress_fan[step / 4][0]);
+    fire_turret(obj, &turret_grchkrx_empress_fan[step / 4][1]);
+}
+
+// honey drop aimed at the player's current position
+static void empress_honey(hsObject obj) {
+
+    hsObject drop;
+    int dx, dy;
+
+    if (player == NULL || (drop = fire_turret(obj, &turret_grchkrx_empress_honey)) == NULL)
+        return;
+
+    dx = (int)world2grid(player->pos.x) + player->physical->dim.x / 2 - (int)world2grid(drop->pos.x);
+    dy = (int)world2grid(player->pos.y) - (int)world2grid(drop->pos.y);
+    if (dy < 1)
+        dy = 1;
+
+    drop->speed.x = adjust(dx * EMPRESS_HONEY_SPEED / dy, -EMPRESS_HONEY_SPEED, EMPRESS_HONEY_SPEED);
+}
+
+// brood of given type centered on her, "dy" grid rows from her top, unless
+// there's plenty of them already
+static void empress_lay(hsObject obj, hcsObjType type, unsigned char max, int dy) {
+
+    hsObject brood = NULL;
+    unsigned char count = 0;
+
+    while ((brood = objpool_next(brood)) != NULL)
+        if (brood->type == type && !(brood->flags & OBJ_FLG_DYING))
+            count++;
+
+    if (count >= max)
+        return;
+
+    // added inactive, as it's spawned from within the objects' tick loop
+    if ((brood = objpool_alloc_inactive(type)) == NULL)
+        return;
+
+    brood->pos.x = obj->pos.x + grid2world((obj->physical->dim.x - type->physical->dim.x) / 2);
+    brood->pos.y = adjust((int)obj->pos.y + grid2world(dy), 0, grid2world(VIEWGRID_HEIGHT - 9));
+}
+
+// horizontal distance from her middle to the player's middle
+static int empress_to_player(hsObject obj) {
+
+    if (player == NULL)
+        return 0;
+
+    return ((int)player->pos.x + grid2world(player->physical->dim.x) / 2) - ((int)obj->pos.x + grid2world(obj->physical->dim.x) / 2);
+}
+
+// her top row when diving down to sting
+static t_pos_world empress_floor(hsObject obj) {
+
+    if (player == NULL)
+        return grid2world(VIEWGRID_HEIGHT - 9);
+
+    return grid2world(world2grid(player->pos.y) - EMPRESS_STING_GAP - obj->physical->dim.y);
+}
+
+static void empress_lasers(hsObject obj) {
+
+    unsigned char i;
+
+    for (i = 0; i < dimof(turret_grchkrx_empress_sting); i++)
+        fire_turret(obj, &turret_grchkrx_empress_sting[i]);
+}
+
+static void empress_sting(hsObject obj) {
+
+    empress_lasers(obj);
+
+    obj->state[0] = EMPRESS_ST_STING;
+    obj->ttl = EMPRESS_STING_TICKS;
+    obj->speed.x = 0;
+    obj->speed.y = 0;
+}
+
+// sideways direction (state[2]) turned back at the view's edges
+static void empress_bounce(hsObject obj) {
+
+    if (OBJ_IS_LEFT(obj) && obj->state[2] < 0)
+        obj->state[2] = 1;
+    else
+    if (OBJ_IS_RIGHT(obj) && obj->state[2] > 0)
+        obj->state[2] = -1;
+}
+
+void cb_empress_behave(hsObject obj) {
+
+    unsigned char t;
+    int dx;
+
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
+    if (obj->state[0] == 0) {
+
+        obj->state[0] = EMPRESS_ST_DRIFT;
+        obj->state[2] = (rand() & 1) ? 1 : -1;
+    }
+
+    // wings torn off at half hp - drop whatever she's doing and go down
+    if (obj->state[3] == 0 && obj->damage_total * 2 >= obj->type->hp) {
+
+        obj->state[3] = 1;
+        obj->state[0] = EMPRESS_ST_DESCEND;
+    }
+
+    // attack loop tick
+    t = (unsigned char)obj->state[1];
+
+    empress_frame(obj, EMPRESS_FRM_NORMAL);
+
+    switch (obj->state[0]) {
+
+        case EMPRESS_ST_DRIFT:
+
+            empress_bounce(obj);
+            obj->speed.y = 0;
+
+            // flinching - darting away, still red from the hit
+            if (obj->ttl > EMPRESS_FLINCH_COOLDOWN - EMPRESS_FLINCH_TICKS) {
+
+                empress_frame(obj, EMPRESS_FRM_HIT);
+                obj->speed.x = obj->state[2] * EMPRESS_FLINCH_SPEED;
+            }
+            else {
+
+                // now and then pause or change her mind
+                if ((rand() & 31) == 0)
+                    obj->state[2] = 1 - (rand() % 3);
+
+                obj->speed.x = obj->state[2] * EMPRESS_DRIFT_SPEED;
+            }
+
+            empress_fan(obj, t);
+
+            if (t >= EMPRESS_HONEY_AT && t < EMPRESS_HONEY_AT + 3 * EMPRESS_HONEY_BURST && (t - EMPRESS_HONEY_AT) % 3 == 0)
+                empress_honey(obj);
+            else
+            if (t >= EMPRESS_EGG_AT - 8 && t < EMPRESS_EGG_AT && (t & 1))
+                empress_frame(obj, EMPRESS_FRM_FLASH);
+            else
+            if (t == EMPRESS_EGG_AT)
+                empress_lay(obj, &ot_grchkrx_larva, EMPRESS_MAX_LARVAE, phy_grchkrx_empress.dim.y);
+
+            obj->state[1] = (t + 1 >= EMPRESS_CYCLE) ? 0 : t + 1;
+            break;
+
+        // flashing while tearing her wings off and sinking to the sweep row
+        case EMPRESS_ST_DESCEND:
+
+            if (t & 1)
+                empress_frame(obj, EMPRESS_FRM_FLASH);
+            obj->state[1] = t + 1;
+
+            obj->speed.x = 0;
+            obj->speed.y = EMPRESS_DESCEND_SPEED;
+
+            if (obj->pos.y >= grid2world(EMPRESS_TORN_ROW)) {
+
+                obj->pos.y = grid2world(EMPRESS_TORN_ROW);
+                obj->speed.y = 0;
+                obj->state[0] = EMPRESS_ST_SWEEP;
+                obj->state[1] = 0;
+                if (obj->state[2] == 0)
+                    obj->state[2] = 1;
+            }
+            break;
+
+        // side to side with the royal fan and laser spreads after
+        // it, laying a stinger, then
+        // off hunting; from here till climbing back state[1] counts the stings
+        // left to chain along the floor
+        case EMPRESS_ST_SWEEP:
+
+            empress_bounce(obj);
+            obj->speed.x = obj->state[2] * EMPRESS_SWEEP_SPEED;
+
+            empress_fan(obj, t - EMPRESS_SWEEP_FAN_AT);
+
+            if (t == EMPRESS_LASERS_AT || t == EMPRESS_LASERS_AT2)
+                empress_lasers(obj);
+            else
+            if (t >= EMPRESS_BROOD_AT - 8 && t < EMPRESS_BROOD_AT && (t & 1))
+                empress_frame(obj, EMPRESS_FRM_FLASH);
+            else
+            if (t == EMPRESS_BROOD_AT)
+                empress_lay(obj, &ot_grchkrx_stinger, EMPRESS_MAX_STINGERS, -3);
+
+            if (t >= EMPRESS_HUNT_AT) {
+
+                obj->state[0] = EMPRESS_ST_HUNT;
+                obj->state[1] = 1 + rand() % EMPRESS_STING_CHAIN;
+                obj->ttl = EMPRESS_HUNT_TICKS;
+            }
+            else
+                obj->state[1] = t + 1;
+            break;
+
+        case EMPRESS_ST_HUNT:
+
+            dx = empress_to_player(obj);
+
+            if (abs(dx) < grid2world(1) || obj->ttl == 0) {
+
+                obj->state[0] = EMPRESS_ST_AIM;
+                obj->ttl = EMPRESS_AIM_TICKS;
+                obj->speed.x = 0;
+            }
+            else
+                obj->speed.x = adjust(dx / 4, -EMPRESS_HUNT_SPEED, EMPRESS_HUNT_SPEED);
+            break;
+
+        // column locked, long warning flash
+        case EMPRESS_ST_AIM:
+
+            if (obj->ttl & 1)
+                empress_frame(obj, EMPRESS_FRM_FLASH);
+
+            if (obj->ttl == 0) {
+
+                obj->state[0] = EMPRESS_ST_DIVE;
+                obj->speed.y = EMPRESS_DIVE_SPEED;
+            }
+            break;
+
+        case EMPRESS_ST_DIVE:
+
+            if (obj->pos.y >= empress_floor(obj)) {
+
+                obj->pos.y = empress_floor(obj);
+                empress_sting(obj);
+            }
+            break;
+
+        // rest after the sting, then chain another one or climb back
+        case EMPRESS_ST_STING:
+
+            if (obj->ttl == 0) {
+
+                if (obj->state[1] > 0) {
+
+                    obj->state[1]--;
+                    obj->state[0] = EMPRESS_ST_SLIDE;
+                    obj->ttl = EMPRESS_SLIDE_TICKS;
+                }
+                else {
+
+                    obj->state[0] = EMPRESS_ST_CLIMB;
+                    obj->speed.y = -EMPRESS_CLIMB_SPEED;
+                }
+            }
+            break;
+
+        // sideways after the player, keeping the height
+        case EMPRESS_ST_SLIDE:
+
+            dx = empress_to_player(obj);
+
+            if (abs(dx) < grid2world(1) || obj->ttl == 0) {
+
+                obj->state[0] = EMPRESS_ST_FLOOR_AIM;
+                obj->ttl = EMPRESS_FLOOR_AIM_TICKS;
+                obj->speed.x = 0;
+            }
+            else
+                obj->speed.x = adjust(dx / 4, -EMPRESS_SLIDE_SPEED, EMPRESS_SLIDE_SPEED);
+            break;
+
+        // column locked again, short warning flash
+        case EMPRESS_ST_FLOOR_AIM:
+
+            if (obj->ttl & 1)
+                empress_frame(obj, EMPRESS_FRM_FLASH);
+
+            if (obj->ttl == 0)
+                empress_sting(obj);
+            break;
+
+        case EMPRESS_ST_CLIMB:
+
+            if (obj->pos.y <= grid2world(EMPRESS_TORN_ROW)) {
+
+                obj->pos.y = grid2world(EMPRESS_TORN_ROW);
+                obj->speed.y = 0;
+                obj->state[0] = EMPRESS_ST_SWEEP;
+                obj->state[1] = 0;
+            }
+            break;
+    }
+}
+
+void cb_empress_die(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_empress_dying;
+    obj->ttl = 10;
+    obj->speed.x = 0;
+    obj->speed.y = 1;
+}
+
+void cb_empress_hit(hsObject obj) {
+
+    empress_frame(obj, EMPRESS_FRM_HIT);
+
+    // wings on and flinch cooled down - start darting away from the player's side
+    if (obj->state[0] == EMPRESS_ST_DRIFT && obj->ttl == 0) {
+
+        obj->ttl = EMPRESS_FLINCH_COOLDOWN;
+        if (player != NULL)
+            obj->state[2] = (player->pos.x + grid2world(player->physical->dim.x) / 2 < obj->pos.x + grid2world(obj->physical->dim.x) / 2) ? 1 : -1;
+    }
+}
+
 void cb_queen_behave(hsObject obj) {
 
     obj->speed.y = adjust(obj->speed.y + 1 - (rand() % 3), -3, 3);
@@ -797,6 +1291,17 @@ const sObjType ot_grchkrx_stinger = {
     cb_stinger_behave,
     cb_stinger_die,
     cb_stinger_hit,
+    NULL
+};
+
+const sObjType ot_grchkrx_empress = {
+    &phy_grchkrx_empress,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_HPBAR,
+    EMPRESS_HP,
+    cb_empress_behave,
+    cb_empress_die,
+    cb_empress_hit,
     NULL
 };
 

@@ -113,6 +113,7 @@ typedef const sTurret *hcsTurret;
 // object class flags
 #define OBJTYPE_FLG_NONE                    0x00
 #define OBJTYPE_FLG_HPBAR                   0x01    // show hp bar above the object
+#define OBJTYPE_FLG_NOWAIT                  0x02    // foe object not holding up SCPOINT_TYPE_WAIT_DEAD (scenery like wax plates)
 
 // callback to implement object's tick behaviour
 typedef void cbObject(hsObject obj);
