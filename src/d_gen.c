@@ -5,13 +5,24 @@
 // images
 // ---------------------------------------------------------------------------
 
-static const sPhysical phy_player_blue = {
-    { 3, 2 }, 
-    {
-        '\0',   0x00,   '^',    0x09,   '\0',   0x00,
-        '<',    0x01,   '-',    0x09,   '>',    0x01
-    }
+// player's ship with engine flame (f)lame char and (c)olor below it
+#define PHY_PLAYER(f, c) {                                                  \
+    { 3, 3 },                                                               \
+    {                                                                       \
+        '|',    0x08,   '\x1e', 0x09,   '|',    0x08,                       \
+        '\xae', 0x09,   '\xfe', 0x91,   '\xaf', 0x09,                       \
+        0x00,   0x00,   (f),    (c),    0x00,   0x00                        \
+    }                                                                       \
+}
+
+static const sPhysical phy_player_flames[] = {
+    PHY_PLAYER('*',     0x0e),
+    PHY_PLAYER('*',     0x0c),
+    PHY_PLAYER('\x0f',  0x0e),
+    PHY_PLAYER('\x0f',  0x0c),
+    PHY_PLAYER('\xf9',  0x06)
 };
+#define phy_player_blue     phy_player_flames[0]
 static const sPhysical phy_player_dead = {
     { 3, 2 }, 
     {
@@ -194,12 +205,19 @@ void cb_player_die(hsObject obj) {
     obj->ttl = 1;
 }
 
+void cb_player_behave(hsObject obj) {
+
+    // flickering engine flame
+    if (!(obj->flags & OBJ_FLG_DYING))
+        obj->physical = &phy_player_flames[rand() % dimof(phy_player_flames)];
+}
+
 const sObjType ot_player = {
     &phy_player_blue,
     OBJTYPE_NAT_ALLY_OBJ,
     OBJTYPE_FLG_NONE,
     100,
-    NULL,
+    cb_player_behave,
     cb_player_die,
     NULL,
     NULL
