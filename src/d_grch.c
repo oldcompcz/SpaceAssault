@@ -121,6 +121,10 @@ static const sPhysical phy_grchkrx_stinger_dying = {
 
 static const sTurret turret_grchkrx_sting = TURRET_GRID(1, 2, 0, 16, &ot_foe_laser);
 
+// fired while diving, as fast relative to the diving stinger as the sting is
+#define STINGER_DIVE_SPEED              14
+static const sTurret turret_grchkrx_sting_dive = TURRET_GRID(1, 2, 0, STINGER_DIVE_SPEED + 16, &ot_foe_laser);
+
 // wax builder - a bee with a wax gland instead of a stinger, squeezing the
 // gland (sparkling) while repairing
 static const sPhysical phy_grchkrx_builder = {
@@ -682,8 +686,9 @@ void cb_wax_hit(hsObject obj) {
 }
 
 // stinger hovers at it's home row trailing the player, after a while locks
-// on the player's column and flashes, dives straight down, stings with a
-// burst of lasers from right above the player and climbs back home
+// on the player's column and flashes, dives straight down firing lasers all
+// the way, stings with a burst of lasers from right above the player and
+// climbs back home
 #define STINGER_ST_HOVER                1
 #define STINGER_ST_AIM                  2
 #define STINGER_ST_DIVE                 3
@@ -693,7 +698,6 @@ void cb_wax_hit(hsObject obj) {
 #define STINGER_TRACK_SPEED             4
 #define STINGER_HOVER_TICKS             24      // plus up to 31 random
 #define STINGER_AIM_TICKS               8
-#define STINGER_DIVE_SPEED              14
 #define STINGER_STING_TICKS             6       // laser on every odd tick
 #define STINGER_RETURN_SPEED            6
 
@@ -742,14 +746,19 @@ void cb_stinger_behave(hsObject obj) {
             if (obj->ttl == 0) {
 
                 obj->state[0] = STINGER_ST_DIVE;
+                obj->state[2] = 0;
                 obj->speed.y = STINGER_DIVE_SPEED;
             }
             break;
 
-        // down until stopped by the monsters' floor
+        // down until stopped by the monsters' floor, laser on every other
+        // tick (counted in state[2]) right from the start
         case STINGER_ST_DIVE:
 
             obj->physical = &phy_grchkrx_stinger_dive;
+
+            if (!(obj->state[2]++ & 1))
+                fire_turret(obj, &turret_grchkrx_sting_dive);
 
             if (obj->pos.y >= grid2world(VIEWGRID_HEIGHT - 9)) {
 
