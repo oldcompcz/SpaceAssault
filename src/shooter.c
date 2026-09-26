@@ -156,6 +156,58 @@ static void draw_hpbar(hsObject obj) {
         screen_fill_region('-', 0x08, start + filled * 2, w - filled, 1);
 }
 
+// put the object into the damage map under all it's non-transparent image
+// cells, "cell" being the map cell under it's top left corner; kept apart
+// from progress(), as using SI/DI in inline asm makes the compiler give up
+// register variables for the whole function
+static void gmap_put(hsObject *cell, const char *img, unsigned char w, unsigned char h, hsObject obj) {
+
+    if (w == 0 || h == 0)
+        return;
+
+    asm {
+
+        // source image, destination map cell, object to put there and the
+        // dimensions (SI/DI are saved by the compiler, as they're used here)
+        mov SI, img
+        mov DI, cell
+        mov AX, obj
+        mov CL, w
+        mov CH, h
+
+        // step to be added to DI after every line (DX := one map row - 4 * w)
+        mov BL, CL
+        xor BH, BH
+        shl BX, 1
+        shl BX, 1
+        mov DX, VIEWGRID_WIDTH * 4
+        sub DX, BX
+    }
+    _nextline: asm {
+
+        mov BL, CL
+    }
+    _nextcell: asm {
+
+        // transparent image cells don't get into the map
+        cmp byte ptr [SI], 0
+        je _skipcell
+        mov [DI], AX
+    }
+    _skipcell: asm {
+
+        // next image cell (char + color), next map cell (ally + foe pointers)
+        add SI, 2
+        add DI, 4
+        dec BL
+        jnz _nextcell
+
+        add DI, DX
+        dec CH
+        jnz _nextline
+    }
+}
+
 unsigned int d1[64], d2[64];
 unsigned char dd;
 unsigned char debug;
@@ -247,9 +299,8 @@ void progress(unsigned char cycle) {
             else
             if (otype->nature & (OBJTYPE_NATMASK_ALLY | OBJTYPE_NATMASK_FOE)) {
 
-                // TODO - tohle zkraslit...
                 // add the object to the damage map
-                char imgoff;
+                // char imgoff;
                 unsigned char objindex;
                 char xtype = (otype->nature & OBJTYPE_NATMASK_FOE) ? 1 : 0;
         
@@ -258,12 +309,14 @@ void progress(unsigned char cycle) {
                 pos.x = world2grid(obj->pos.x);
                 pos.y = world2grid(obj->pos.y);
 
-                // TODO - asm...
+                /*
                 imgoff = 0;
                 for (vec.y = 0; vec.y < otphy->dim.y; vec.y++)
                     for (vec.x = 0; vec.x < otphy->dim.x; vec.x++, imgoff += 2)
                         if (otphy->image[imgoff] != 0)
                             g_map[vec.y + pos.y][vec.x + pos.x][xtype] = obj;
+                */
+                gmap_put(&g_map[pos.y][pos.x][xtype], otphy->image, otphy->dim.x, otphy->dim.y, obj);
             }
         }
     }
