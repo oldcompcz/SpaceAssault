@@ -30,6 +30,8 @@ extern const sObjType ot_octo;
 extern const sObjType ot_flank;
 extern const sObjType ot_grchkrx_bee;
 extern const sObjType ot_grchkrx_larva;
+extern const sObjType ot_grchkrx_builder;
+extern const sObjType ot_grchkrx_wax;
 extern const sObjType ot_grchkrx_queen;
 extern const sObjType ot_alien_bible;
 extern const sObjType ot_phantom;

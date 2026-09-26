@@ -74,6 +74,103 @@ static const sPhysical phy_grchkrx_pupa_wings = {
     }
 };
 
+// wax builder - a bee with a wax gland instead of a stinger, squeezing the
+// gland (sparkling) while repairing
+static const sPhysical phy_grchkrx_builder = {
+    { 5, 2 },
+    {
+        '/',    0x04,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x04,
+        '[',    0x04,   '=',    0x06,   '#',    0x0e,   '=',    0x06,   ']',    0x04
+    }
+};
+static const sPhysical phy_grchkrx_builder_hit = {
+    { 5, 2 },
+    {
+        '/',    0x0c,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x0c,
+        '[',    0x0c,   '=',    0x0c,   '#',    0x0e,   '=',    0x0c,   ']',    0x0c
+    }
+};
+static const sPhysical phy_grchkrx_builder_repair_0 = {
+    { 5, 2 },
+    {
+        '/',    0x04,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '\\',   0x04,
+        '[',    0x04,   '*',    0x0e,   '#',    0x0f,   '.',    0x06,   ']',    0x04
+    }
+};
+static const sPhysical phy_grchkrx_builder_repair_1 = {
+    { 5, 2 },
+    {
+        '\\',   0x04,   'o',    0x06,   'o',    0x06,   'o',    0x06,   '/',    0x04,
+        '[',    0x04,   '.',    0x06,   '#',    0x0e,   '*',    0x0e,   ']',    0x04
+    }
+};
+static const sPhysical phy_grchkrx_builder_dying = {
+    { 5, 2 },
+    {
+        '\0',   0x07,   'o',    0x08,   'o',    0x08,   'o',    0x08,   '\0',   0x07,
+        '\0',   0x08,   '=',    0x08,   '.',    0x06,   '=',    0x08,   '\0',   0x08
+    }
+};
+
+// wax plate - a strip of honeycomb, honey (shaded) filling it's cells; it
+// crumbles in three stages as it takes damage, flashing white when hit
+static const sPhysical phy_grchkrx_wax_0 = {
+    { 7, 2 },
+    {
+        '/',    0x0e,   '\xb0', 0x06,   '\\',   0x0e,   '_',    0x0e,   '/',    0x0e,   '\xb0', 0x06,   '\\',   0x0e,
+        '\\',   0x0e,   '_',    0x0e,   '/',    0x0e,   '\xb0', 0x06,   '\\',   0x0e,   '_',    0x0e,   '/',    0x0e
+    }
+};
+static const sPhysical phy_grchkrx_wax_0_hit = {
+    { 7, 2 },
+    {
+        '/',    0x0f,   '\xb0', 0x0f,   '\\',   0x0f,   '_',    0x0f,   '/',    0x0f,   '\xb0', 0x0f,   '\\',   0x0f,
+        '\\',   0x0f,   '_',    0x0f,   '/',    0x0f,   '\xb0', 0x0f,   '\\',   0x0f,   '_',    0x0f,   '/',    0x0f
+    }
+};
+static const sPhysical phy_grchkrx_wax_1 = {
+    { 7, 2 },
+    {
+        '/',    0x0e,   '\xb0', 0x06,   '\\',   0x06,   '_',    0x0e,   ',',    0x06,   '.',    0x06,   '\\',   0x0e,
+        '\\',   0x06,   '_',    0x0e,   '/',    0x0e,   '\xb0', 0x06,   '.',    0x06,   '_',    0x06,   '/',    0x0e
+    }
+};
+static const sPhysical phy_grchkrx_wax_1_hit = {
+    { 7, 2 },
+    {
+        '/',    0x0f,   '\xb0', 0x0f,   '\\',   0x0f,   '_',    0x0f,   ',',    0x0f,   '.',    0x0f,   '\\',   0x0f,
+        '\\',   0x0f,   '_',    0x0f,   '/',    0x0f,   '\xb0', 0x0f,   '.',    0x0f,   '_',    0x0f,   '/',    0x0f
+    }
+};
+static const sPhysical phy_grchkrx_wax_2 = {
+    { 7, 2 },
+    {
+        '/',    0x06,   '.',    0x08,   '\'',   0x06,   '_',    0x08,   ',',    0x08,   '.',    0x08,   '\\',   0x06,
+        '\'',   0x08,   '_',    0x06,   '.',    0x08,   ':',    0x06,   '.',    0x08,   ',',    0x08,   '/',    0x06
+    }
+};
+static const sPhysical phy_grchkrx_wax_2_hit = {
+    { 7, 2 },
+    {
+        '/',    0x0f,   '.',    0x0f,   '\'',   0x0f,   '_',    0x0f,   ',',    0x0f,   '.',    0x0f,   '\\',   0x0f,
+        '\'',   0x0f,   '_',    0x0f,   '.',    0x0f,   ':',    0x0f,   '.',    0x0f,   ',',    0x0f,   '/',    0x0f
+    }
+};
+static const sPhysical phy_grchkrx_wax_dying = {
+    { 7, 2 },
+    {
+        '.',    0x08,   '\0',   0x07,   '\'',   0x08,   '\0',   0x07,   ',',    0x08,   '\0',   0x07,   '.',    0x08,
+        '\0',   0x07,   ',',    0x08,   '\0',   0x07,   '.',    0x08,   '\0',   0x07,   '\'',   0x08,   '\0',   0x07
+    }
+};
+
+// plate appearance by damage stage, normal and hit
+static const hcsPhysical phy_grchkrx_wax_stages[3][2] = {
+    { &phy_grchkrx_wax_0, &phy_grchkrx_wax_0_hit },
+    { &phy_grchkrx_wax_1, &phy_grchkrx_wax_1_hit },
+    { &phy_grchkrx_wax_2, &phy_grchkrx_wax_2_hit },
+};
+
 static const sPhysical phy_grchkrx_queen = {
     { 8, 4 },
     {
@@ -233,6 +330,202 @@ void cb_larva_hit(hsObject obj) {
     obj->physical = &phy_grchkrx_larva_hit;
 }
 
+// wax builder patrols side to side, lazily bobbing up to BUILDER_BOB rows
+// around it's home row, laying BUILDER_PLATES plates below the lowest bob;
+// passing over a damaged plate (up to BUILDER_REACH rows below) it stops
+// and mends WAX_REPAIR_HP every WAX_REPAIR_PERIOD ticks until it's whole
+#define BUILDER_SPEED                   3
+#define BUILDER_BOB                     1
+#define BUILDER_PLATES                  3
+#define BUILDER_REACH                   4
+#define BUILDER_LAY_COOLDOWN            24
+
+// plates are sturdy, but melt WAX_MELT_HP every second once no builder is left
+#define WAX_HP                          48
+#define WAX_REPAIR_HP                   2
+#define WAX_REPAIR_PERIOD               4       // power of 2
+#define WAX_MELT_HP                     4
+
+#define WAX_IS_LIVE(p)                  ((p)->type == &ot_grchkrx_wax && !((p)->flags & (OBJ_FLG_DYING | OBJ_FLG_DESTROY)))
+
+static unsigned char builder_alive(void) {
+
+    hsObject obj = NULL;
+
+    while ((obj = objpool_next(obj)) != NULL)
+        if (obj->type == &ot_grchkrx_builder && !(obj->flags & OBJ_FLG_DYING))
+            return 1;
+
+    return 0;
+}
+
+// damaged plate right below the builder's middle, if any
+static hsObject builder_find_damaged(hsObject obj) {
+
+    hsObject wax = NULL;
+    int bx, by, px, py;
+
+    bx = world2grid(obj->pos.x) + obj->physical->dim.x / 2;
+    by = world2grid(obj->pos.y) + obj->physical->dim.y;
+
+    while ((wax = objpool_next(wax)) != NULL) {
+
+        if (!WAX_IS_LIVE(wax) || wax->damage_total == 0)
+            continue;
+
+        px = world2grid(wax->pos.x);
+        py = world2grid(wax->pos.y);
+
+        if (bx >= px && bx < px + phy_grchkrx_wax_0.dim.x && py >= by && py <= by + BUILDER_REACH)
+            return wax;
+    }
+
+    return NULL;
+}
+
+// home row is kept in state[0] off by one, zero means not initialized yet
+#define BUILDER_HOME(obj)               ((obj)->state[0] - 1)
+
+// lay a plate centered under the builder's home, unless it'd touch another plate
+static unsigned char builder_lay(hsObject obj) {
+
+    hsObject wax = NULL;
+    int x, y, w, h, px, py;
+
+    w = phy_grchkrx_wax_0.dim.x;
+    h = phy_grchkrx_wax_0.dim.y;
+    x = adjust(world2grid(obj->pos.x) + obj->physical->dim.x / 2 - w / 2, 0, VIEWGRID_WIDTH - w);
+    y = BUILDER_HOME(obj) + obj->physical->dim.y + BUILDER_BOB;
+
+    // too low, would get clamped up into the builder
+    if (y > VIEWGRID_HEIGHT - 9)
+        return 0;
+
+    while ((wax = objpool_next(wax)) != NULL) {
+
+        if (!WAX_IS_LIVE(wax))
+            continue;
+
+        px = world2grid(wax->pos.x);
+        py = world2grid(wax->pos.y);
+
+        // keep a column of gap between plates
+        if (px < x + w + 1 && x < px + w + 1 && py < y + h && y < py + h)
+            return 0;
+    }
+
+    // added inactive, as it's spawned from within the objects' tick loop
+    if ((wax = objpool_alloc_inactive(&ot_grchkrx_wax)) == NULL)
+        return 0;
+
+    wax->pos.x = grid2world(x);
+    wax->pos.y = grid2world(y);
+    return 1;
+}
+
+void cb_builder_behave(hsObject obj) {
+
+    hsObject wax;
+    int home;
+
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
+    // first tick - remember home, load the plates and head away from the nearer side
+    if (obj->state[0] == 0) {
+
+        obj->state[0] = world2grid(obj->pos.y) + 1;
+        obj->state[1] = BUILDER_PLATES;
+        obj->state[2] = obj->pos.x < grid2world(VIEWGRID_WIDTH / 2) ? 1 : -1;
+        obj->ttl = BUILDER_LAY_COOLDOWN / 2;
+    }
+
+    // hold still over the damaged plate and mend it
+    if ((wax = builder_find_damaged(obj)) != NULL) {
+
+        obj->speed.x = 0;
+        obj->speed.y = 0;
+        obj->state[3]++;
+        obj->physical = (obj->state[3] & 2) ? &phy_grchkrx_builder_repair_1 : &phy_grchkrx_builder_repair_0;
+
+        if ((obj->state[3] & (WAX_REPAIR_PERIOD - 1)) == 0)
+            wax->damage_total = wax->damage_total > WAX_REPAIR_HP ? wax->damage_total - WAX_REPAIR_HP : 0;
+
+        return;
+    }
+
+    obj->physical = &phy_grchkrx_builder;
+
+    if (OBJ_IS_LEFT(obj) && obj->state[2] < 0)
+        obj->state[2] = 1;
+    else
+    if (OBJ_IS_RIGHT(obj) && obj->state[2] > 0)
+        obj->state[2] = -1;
+
+    obj->speed.x = obj->state[2] * BUILDER_SPEED;
+
+    // now and then drift a bit up or down, never straying far from home
+    home = grid2world(BUILDER_HOME(obj));
+    if ((int)obj->pos.y <= home - grid2world(BUILDER_BOB))
+        obj->speed.y = 1;
+    else
+    if ((int)obj->pos.y >= home + grid2world(BUILDER_BOB))
+        obj->speed.y = -1;
+    else
+    if ((rand() & 31) == 0)
+        obj->speed.y = 1 - (rand() % 3);
+
+    if (obj->state[1] > 0 && obj->ttl == 0 && builder_lay(obj)) {
+
+        obj->state[1]--;
+        obj->ttl = BUILDER_LAY_COOLDOWN + (rand() & 15);
+    }
+}
+
+void cb_builder_die(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_builder_dying;
+    obj->ttl = 3;
+}
+
+void cb_builder_hit(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_builder_hit;
+}
+
+// 0 - whole, 1 - cracked, 2 - crumbling
+static unsigned char wax_stage(hsObject obj) {
+
+    return obj->damage_total >= WAX_HP ? 2 : obj->damage_total * 3 / WAX_HP;
+}
+
+void cb_wax_behave(hsObject obj) {
+
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
+    obj->physical = phy_grchkrx_wax_stages[wax_stage(obj)][0];
+
+    // once a second check for builders, nobody's tending the orphaned plate
+    if (obj->ttl == 0) {
+
+        obj->ttl = 16;
+        if (!builder_alive())
+            obj->damage_total += WAX_MELT_HP;
+    }
+}
+
+void cb_wax_die(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_wax_dying;
+    obj->ttl = 3;
+}
+
+void cb_wax_hit(hsObject obj) {
+
+    obj->physical = phy_grchkrx_wax_stages[wax_stage(obj)][1];
+}
+
 void cb_queen_behave(hsObject obj) {
 
     obj->speed.y = adjust(obj->speed.y + 1 - (rand() % 3), -3, 3);
@@ -306,6 +599,28 @@ const sObjType ot_grchkrx_larva = {
     cb_larva_behave,
     cb_larva_die,
     cb_larva_hit,
+    NULL
+};
+
+const sObjType ot_grchkrx_builder = {
+    &phy_grchkrx_builder,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
+    16,
+    cb_builder_behave,
+    cb_builder_die,
+    cb_builder_hit,
+    NULL
+};
+
+const sObjType ot_grchkrx_wax = {
+    &phy_grchkrx_wax_0,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NOWAIT,
+    WAX_HP,
+    cb_wax_behave,
+    cb_wax_die,
+    cb_wax_hit,
     NULL
 };
 
