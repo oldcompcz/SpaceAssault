@@ -39,6 +39,8 @@ extern const sObjType ot_blob_small;
 extern const sObjType ot_fuser;
 extern const sObjType ot_fuser_small;
 extern const sObjType ot_mother_cell;
+extern const sObjType ot_prism;
+extern const sObjType ot_splitter;
 
 extern hsObject player;
 

@@ -16,6 +16,7 @@ d_gen.obj \
 d_grch.obj \
 d_octo.obj \
 d_phant.obj \
+d_prism.obj \
 d_supply.obj \
 input.obj \
 objpool.obj \
