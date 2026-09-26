@@ -29,6 +29,7 @@ extern const sObjType ot_foe_ball;
 extern const sObjType ot_octo;
 extern const sObjType ot_flank;
 extern const sObjType ot_grchkrx_bee;
+extern const sObjType ot_grchkrx_larva;
 extern const sObjType ot_grchkrx_queen;
 extern const sObjType ot_alien_bible;
 extern const sObjType ot_phantom;
