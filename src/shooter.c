@@ -26,8 +26,13 @@
 #define VIEWGRID_SCREEN_Y               0
 
 #define BAR_LEFT                        (VIEWGRID_WIDTH + 3)
-#define BAR_WIDTH                       16
-#define BAR_POS_INTEGRITY               5
+
+// player's hp bar on the bottom screen line, spanning the playfield under the ship
+#define HPBAR_Y                         49
+#define HPBAR_LABEL_WIDTH               3       // "HP "
+#define HPBAR_LEFT                      (VIEWGRID_SCREEN_X + HPBAR_LABEL_WIDTH)
+#define HPBAR_WIDTH                     (VIEWGRID_WIDTH - HPBAR_LABEL_WIDTH)
+#define HPBAR_FLASH_FRAMES              6       // white flash after taking a hit
 
 extern const sScenarioPoint g_scenario_original[];
 
@@ -351,9 +356,9 @@ void progress(unsigned char cycle) {
     }
 }
 
-void show_bar(char x, char y, char total, char current) {
+void show_bar(char x, char y, char width, char total, char current) {
 
-    screen_print_bar(x, y, BAR_WIDTH, (BAR_WIDTH * current + BAR_WIDTH / 2) / total);
+    screen_print_bar(x, y, width, (width * current + total / 2) / total);
 }
 
 int main(int argc, char *argv[]) {
@@ -361,6 +366,8 @@ int main(int argc, char *argv[]) {
     hsObject emit;
     hcsScenarioInfo scinfo;
     unsigned int cycle;
+    unsigned int hp_left, hp_left_prev;
+    unsigned char hp_flash;
     unsigned char event;
 
     xlog("start");
@@ -376,6 +383,8 @@ int main(int argc, char *argv[]) {
     player->pos.y = grid2world(VIEWGRID_HEIGHT - 1 - player->physical->dim.y);
 
     shield = NULL;
+    hp_left_prev = player->type->hp;
+    hp_flash = 0;
     
     // prepare playfield
     screen_init();
@@ -383,9 +392,9 @@ int main(int argc, char *argv[]) {
     screen_fill_region('|', 8, screen_offset_xy(0, 0), 1, 50);
     screen_fill_region('|', 8, screen_offset_xy(VIEWGRID_WIDTH + 1, 0), 1, 50);
 
-    // prepare integrity bar
+    // prepare hp bar
     screen_color(7);
-    screen_print_text(BAR_LEFT, BAR_POS_INTEGRITY - 2, "INTEGRITY");
+    screen_print_text(VIEWGRID_SCREEN_X, HPBAR_Y, "HP");
 
     // add texts
     screen_color(8);
@@ -557,16 +566,32 @@ int main(int argc, char *argv[]) {
 */            
         }
         
-        // show integrity bar
-        if (player->damage_total == 0)
+        // show hp bar; green over 2/3, yellow over 1/3, then light red,
+        // blinking (hw blink is off, so toggled by hand) on the last 1/5
+        // and flashing white for a moment whenever hp drops
+        hp_left = player->type->hp - player->damage_total;
+        if (hp_left < hp_left_prev)
+            hp_flash = HPBAR_FLASH_FRAMES;
+        hp_left_prev = hp_left;
+
+        if (hp_flash) {
+
+            hp_flash--;
+            screen_color(15);
+        }
+        else
+        if (hp_left * 3 > player->type->hp * 2)
             screen_color(2);
         else
-        if (player->damage_total > (3 * player->type->hp) / 4)
-            screen_color(4);
-        else
+        if (hp_left * 3 > player->type->hp)
             screen_color(14);
+        else
+        if (hp_left * 5 > player->type->hp || (cycle & 16))
+            screen_color(12);
+        else
+            screen_color(4);
 
-        show_bar(BAR_LEFT, BAR_POS_INTEGRITY, player->type->hp, player->type->hp - player->damage_total);
+        show_bar(HPBAR_LEFT, HPBAR_Y, HPBAR_WIDTH, player->type->hp, hp_left);
         
         // handle objects and bullets
         progress(cycle++);
