@@ -74,6 +74,53 @@ static const sPhysical phy_grchkrx_pupa_wings = {
     }
 };
 
+// stinger - small fast bee flapping while it hovers, flashing when it locks
+// on and folding it's wings for the dive
+static const sPhysical phy_grchkrx_stinger_0 = {
+    { 3, 2 },
+    {
+        '\\',   0x04,   'V',    0x06,   '/',    0x04,
+        '\0',   0x00,   '!',    0x09,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_stinger_1 = {
+    { 3, 2 },
+    {
+        '/',    0x04,   'V',    0x06,   '\\',   0x04,
+        '\0',   0x00,   '!',    0x09,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_stinger_aim = {
+    { 3, 2 },
+    {
+        '\\',   0x0c,   'V',    0x0e,   '/',    0x0c,
+        '\0',   0x00,   '!',    0x0f,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_stinger_dive = {
+    { 3, 2 },
+    {
+        '|',    0x04,   'V',    0x06,   '|',    0x04,
+        '\0',   0x00,   'v',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_stinger_hit = {
+    { 3, 2 },
+    {
+        '\\',   0x0c,   'V',    0x0c,   '/',    0x0c,
+        '\0',   0x00,   '!',    0x0c,   '\0',   0x00
+    }
+};
+static const sPhysical phy_grchkrx_stinger_dying = {
+    { 3, 2 },
+    {
+        '.',    0x08,   'v',    0x08,   '.',    0x08,
+        '\0',   0x00,   ' ',    0x07,   '\0',   0x00
+    }
+};
+
+static const sTurret turret_grchkrx_sting = TURRET_GRID(1, 2, 0, 16, &ot_foe_laser);
+
 // wax builder - a bee with a wax gland instead of a stinger, squeezing the
 // gland (sparkling) while repairing
 static const sPhysical phy_grchkrx_builder = {
@@ -526,6 +573,124 @@ void cb_wax_hit(hsObject obj) {
     obj->physical = phy_grchkrx_wax_stages[wax_stage(obj)][1];
 }
 
+// stinger hovers at it's home row trailing the player, after a while locks
+// on the player's column and flashes, dives straight down, stings with a
+// burst of lasers from right above the player and climbs back home
+#define STINGER_ST_HOVER                1
+#define STINGER_ST_AIM                  2
+#define STINGER_ST_DIVE                 3
+#define STINGER_ST_STING                4
+#define STINGER_ST_RETURN               5
+
+#define STINGER_TRACK_SPEED             4
+#define STINGER_HOVER_TICKS             24      // plus up to 31 random
+#define STINGER_AIM_TICKS               8
+#define STINGER_DIVE_SPEED              14
+#define STINGER_STING_TICKS             6       // laser on every odd tick
+#define STINGER_RETURN_SPEED            6
+
+void cb_stinger_behave(hsObject obj) {
+
+    int dx;
+
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
+    switch (obj->state[0]) {
+
+        // first tick - remember home row
+        case 0:
+
+            obj->state[0] = STINGER_ST_HOVER;
+            obj->state[1] = world2grid(obj->pos.y);
+            obj->ttl = STINGER_HOVER_TICKS + (rand() & 31);
+            break;
+
+        // lag after the player, lock on once rested and roughly above the player
+        case STINGER_ST_HOVER:
+
+            obj->physical = (obj->ttl & 2) ? &phy_grchkrx_stinger_1 : &phy_grchkrx_stinger_0;
+            obj->speed.y = 0;
+
+            dx = 0;
+            if (player != NULL)
+                dx = ((int)player->pos.x + grid2world(player->physical->dim.x) / 2) - ((int)obj->pos.x + grid2world(obj->physical->dim.x) / 2);
+
+            if (obj->ttl == 0 && abs(dx) < grid2world(1)) {
+
+                obj->state[0] = STINGER_ST_AIM;
+                obj->ttl = STINGER_AIM_TICKS;
+                obj->speed.x = 0;
+            }
+            else
+                obj->speed.x = adjust(dx / 4, -STINGER_TRACK_SPEED, STINGER_TRACK_SPEED);
+            break;
+
+        // column locked, flash the warning
+        case STINGER_ST_AIM:
+
+            obj->physical = (obj->ttl & 1) ? &phy_grchkrx_stinger_aim : &phy_grchkrx_stinger_0;
+
+            if (obj->ttl == 0) {
+
+                obj->state[0] = STINGER_ST_DIVE;
+                obj->speed.y = STINGER_DIVE_SPEED;
+            }
+            break;
+
+        // down until stopped by the monsters' floor
+        case STINGER_ST_DIVE:
+
+            obj->physical = &phy_grchkrx_stinger_dive;
+
+            if (obj->pos.y >= grid2world(VIEWGRID_HEIGHT - 9)) {
+
+                obj->state[0] = STINGER_ST_STING;
+                obj->ttl = STINGER_STING_TICKS;
+                obj->speed.y = 0;
+            }
+            break;
+
+        case STINGER_ST_STING:
+
+            obj->physical = &phy_grchkrx_stinger_dive;
+
+            if (obj->ttl & 1)
+                fire_turret(obj, &turret_grchkrx_sting);
+
+            if (obj->ttl == 0) {
+
+                obj->state[0] = STINGER_ST_RETURN;
+                obj->speed.y = -STINGER_RETURN_SPEED;
+            }
+            break;
+
+        case STINGER_ST_RETURN:
+
+            obj->physical = (obj->pos.y & 32) ? &phy_grchkrx_stinger_1 : &phy_grchkrx_stinger_0;
+
+            if (obj->pos.y <= grid2world(obj->state[1])) {
+
+                obj->pos.y = grid2world(obj->state[1]);
+                obj->speed.y = 0;
+                obj->state[0] = STINGER_ST_HOVER;
+                obj->ttl = STINGER_HOVER_TICKS + (rand() & 31);
+            }
+            break;
+    }
+}
+
+void cb_stinger_die(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_stinger_dying;
+    obj->ttl = 3;
+}
+
+void cb_stinger_hit(hsObject obj) {
+
+    obj->physical = &phy_grchkrx_stinger_hit;
+}
+
 void cb_queen_behave(hsObject obj) {
 
     obj->speed.y = adjust(obj->speed.y + 1 - (rand() % 3), -3, 3);
@@ -621,6 +786,17 @@ const sObjType ot_grchkrx_wax = {
     cb_wax_behave,
     cb_wax_die,
     cb_wax_hit,
+    NULL
+};
+
+const sObjType ot_grchkrx_stinger = {
+    &phy_grchkrx_stinger_0,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
+    12,
+    cb_stinger_behave,
+    cb_stinger_die,
+    cb_stinger_hit,
     NULL
 };
 
