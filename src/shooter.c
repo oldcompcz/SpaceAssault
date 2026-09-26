@@ -108,6 +108,14 @@ hsObject fire_turret(hsObject obj, hcsTurret turret) {
 #define PERIOD_8PERSEC          (!(cycle & 7))
 #define PERIOD_16PERSEC         (!(cycle & 3))
 
+// whole object lies within the playfield; objects spawned during the tick
+// (turret shots, megablast fragments, summoned minions) weren't clamped yet
+// and may be off the grid, even wrapped around to huge unsigned positions
+static unsigned char obj_in_view(hsObject obj) {
+
+    return (world2grid(obj->pos.x) + obj->physical->dim.x) <= VIEWGRID_WIDTH && (world2grid(obj->pos.y) + obj->physical->dim.y) <= VIEWGRID_HEIGHT;
+}
+
 // hp bar in the row above objects of types asking for it by OBJTYPE_FLG_HPBAR;
 // missing hp is dark, any hp left shows at least a bit
 static void draw_hpbar(hsObject obj) {
@@ -122,7 +130,7 @@ static void draw_hpbar(hsObject obj) {
     if (obj->flags & (OBJ_FLG_HIDDEN | OBJ_FLG_DYING) || obj->damage_total >= otype->hp)
         return;
 
-    if (world2grid(obj->pos.y) == 0)
+    if (world2grid(obj->pos.y) == 0 || !obj_in_view(obj))
         return;
 
     w       = obj->physical->dim.x;
@@ -263,6 +271,10 @@ void progress(unsigned char cycle) {
         
             char imgoff;
             
+            // g_map lookup would go out of bounds
+            if (!obj_in_view(obj))
+                continue;
+            
             otphy = obj->physical;
 
             pos.x = world2grid(obj->pos.x);
@@ -314,6 +326,10 @@ void progress(unsigned char cycle) {
         obj->flags &= ~OBJ_FLG_INACTIVE;
 
         if (obj->flags & OBJ_FLG_HIDDEN)
+            continue;
+
+        // would draw over the walls/sidebar, which aren't cleared every frame
+        if (!obj_in_view(obj))
             continue;
     
         otype = obj->type;
