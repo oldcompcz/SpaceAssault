@@ -10,6 +10,7 @@ TL=$(TCCDIR)\bin\tlink
 # all objects
 OBJS=\
 d_bible.obj \
+d_cell.obj \
 d_flank.obj \
 d_gen.obj \
 d_grch.obj \

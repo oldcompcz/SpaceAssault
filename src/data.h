@@ -34,6 +34,11 @@ extern const sObjType ot_alien_bible;
 extern const sObjType ot_phantom;
 extern const sObjType ot_phantom_lord;
 extern const sObjType ot_mirage;
+extern const sObjType ot_blob;
+extern const sObjType ot_blob_small;
+extern const sObjType ot_fuser;
+extern const sObjType ot_fuser_small;
+extern const sObjType ot_mother_cell;
 
 extern hsObject player;
 
