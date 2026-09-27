@@ -367,6 +367,56 @@ static const sTurret turret_grchkrx_queen_5 = TURRET_GRID(4, 3, +3, 8, &ot_foe_b
 static const sTurret turret_grchkrx_queen_6 = TURRET_GRID(3, 3, -4, 7, &ot_foe_ball);
 static const sTurret turret_grchkrx_queen_7 = TURRET_GRID(4, 3, +4, 7, &ot_foe_ball);
 
+// brood pod - a floating chunk of honeycomb, it's cells full of honey; the
+// brood cells and the heart hang under it as separate objects
+// e - edges color; h - honey char; c - honey color
+#define PHY_POD(e, h, c) { \
+    { 19, 3 }, \
+    { \
+        '\0', 0x00, '_',  (e),  '\0', 0x00, '\0', 0x00, '\0', 0x00, '_',  (e),  '\0', 0x00, '\0', 0x00, '\0', 0x00, '_',  (e),  '\0', 0x00, '\0', 0x00, '\0', 0x00, '_',  (e),  '\0', 0x00, '\0', 0x00, '\0', 0x00, '_',  (e),  '\0', 0x00, \
+        '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  \
+        '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e),  (h),  (c),  '\\', (e),  '_',  (e),  '/',  (e)   \
+    } \
+}
+
+static const sPhysical phy_grchkrx_pod          = PHY_POD(0x0e, '\xb0', 0x06);
+static const sPhysical phy_grchkrx_pod_cracked  = PHY_POD(0x06, ',', 0x0e);
+static const sPhysical phy_grchkrx_pod_dying    = PHY_POD(0x08, '.', 0x08);
+
+// pod's hanging parts, 3x1
+#define PHY_POD_PART(a, ac, b, bc, c, cc) { { 3, 1 }, { (a), (ac), (b), (bc), (c), (cc) } }
+
+// brood cell - grub wriggling inside, bulging and flashing just before it
+// drops out; sealed with wax when shot, the grub peeking through the wax
+// while chewing it's way out again
+static const sPhysical phy_grchkrx_cell_0       = PHY_POD_PART('(', 0x06, 'o', 0x0e, ')', 0x06);
+static const sPhysical phy_grchkrx_cell_1       = PHY_POD_PART('(', 0x06, 'O', 0x0e, ')', 0x06);
+static const sPhysical phy_grchkrx_cell_full    = PHY_POD_PART('(', 0x0e, '@', 0x0e, ')', 0x0e);
+static const sPhysical phy_grchkrx_cell_hit     = PHY_POD_PART('(', 0x0c, 'o', 0x0c, ')', 0x0c);
+static const sPhysical phy_grchkrx_cell_sealed  = PHY_POD_PART('[', 0x0e, '\xb1', 0x06, ']', 0x0e);
+static const sPhysical phy_grchkrx_cell_chewed  = PHY_POD_PART('[', 0x0e, 'o', 0x0e, ']', 0x0e);
+static const sPhysical phy_grchkrx_cell_dying   = PHY_POD_PART('.', 0x08, ',', 0x08, '.', 0x08);
+
+// heart - plugged with wax, the plug flashing before it opens; open it beats;
+// 5x2 heart shape filling the gaps between the inner cells and hanging below
+// them; l, r - top corners; m - middle char; e, c - edges and middle colors
+#define PHY_POD_HEART(l, r, m, e, c) { \
+    { 5, 2 }, \
+    { \
+        (l),  (e),  (m),  (c),  (m),  (c),  (m),  (c),  (r),  (e),  \
+        '\0', 0x00, '\\', (e),  (m),  (c),  '/',  (e),  '\0', 0x00  \
+    } \
+}
+
+static const sPhysical phy_grchkrx_heart_plug   = PHY_POD_HEART('{', '}', '=', 0x06, 0x0e);
+static const sPhysical phy_grchkrx_heart_flash  = PHY_POD_HEART('{', '}', '\x03', 0x0c, 0x0c);
+static const sPhysical phy_grchkrx_heart_0      = PHY_POD_HEART('<', '>', '\x03', 0x04, 0x0c);
+static const sPhysical phy_grchkrx_heart_1      = PHY_POD_HEART('<', '>', '\x03', 0x04, 0x04);
+static const sPhysical phy_grchkrx_heart_hit    = PHY_POD_HEART('<', '>', '\x03', 0x0f, 0x0f);
+static const sPhysical phy_grchkrx_heart_dying  = PHY_POD_HEART('.', '.', '*', 0x08, 0x08);
+
+static const sTurret turret_grchkrx_heart_honey = TURRET_GRID(2, 2, 0, EMPRESS_HONEY_SPEED, &ot_grchkrx_honey);
+
 // ---------------------------------------------------------------------------
 // object types
 // ---------------------------------------------------------------------------
@@ -882,13 +932,13 @@ static void empress_fan(hsObject obj, int step) {
     fire_turret(obj, &turret_grchkrx_empress_fan[step / 4][1]);
 }
 
-// honey drop aimed at the player's current position
-static void empress_honey(hsObject obj) {
+// honey drop from the turret aimed at the player's current position
+static void honey_aimed(hsObject obj, hcsTurret turret) {
 
     hsObject drop;
     int dx, dy;
 
-    if (player == NULL || (drop = fire_turret(obj, &turret_grchkrx_empress_honey)) == NULL)
+    if (player == NULL || (drop = fire_turret(obj, turret)) == NULL)
         return;
 
     dx = (int)world2grid(player->pos.x) + player->physical->dim.x / 2 - (int)world2grid(drop->pos.x);
@@ -1018,7 +1068,7 @@ void cb_empress_behave(hsObject obj) {
             empress_fan(obj, t);
 
             if (t >= EMPRESS_HONEY_AT && t < EMPRESS_HONEY_AT + 3 * EMPRESS_HONEY_BURST && (t - EMPRESS_HONEY_AT) % 3 == 0)
-                empress_honey(obj);
+                honey_aimed(obj, &turret_grchkrx_empress_honey);
             else
             if (t >= EMPRESS_EGG_AT - 8 && t < EMPRESS_EGG_AT && (t & 1))
                 empress_frame(obj, EMPRESS_FRM_FLASH);
@@ -1194,6 +1244,386 @@ void cb_empress_hit(hsObject obj) {
     }
 }
 
+// brood pod drifts from side to side, sinking and rising as it pleases
+// (lower once cracked), the comb itself is armour soaking up shots;
+// only it's heart takes damage (passed on to the pod, showing the hp bar),
+// but it's plugged with wax most of the time - the longer the more brood
+// cells are open; it opens to spit a burst of aimed honey and closes again;
+// open cells drop larvae, shot ones get sealed with wax, but the grub chews
+// it's way out again after a while; at half hp the comb cracks, all cells
+// burst open at once and everything gets faster
+#define POD_HP                          160
+#define POD_DRIFT_SPEED                 6       // world units per behaviour tick
+#define POD_RAGE_SPEED                  10
+#define POD_RISE_SPEED                  3       // up and down, world units per behaviour tick
+#define POD_RAGE_RISE_SPEED             5
+#define POD_TOP_ROW                     1       // leaving the row above for the hp bar
+#define POD_BOTTOM_ROW                  14      // lowest top row, cells hanging 3 rows lower
+#define POD_RAGE_BOTTOM_ROW             22
+#define POD_MAX_BROOD                   8       // larvae and bees around, cells hold back beyond this
+#define POD_CELL_HP                     18
+#define POD_CELL_BROOD_TICKS            72      // between larvae from an open cell, plus up to 31 random
+#define POD_RAGE_BROOD_TICKS            48
+#define POD_CELL_FULL_TICKS             8       // bulging and flashing before dropping a larva
+#define POD_CELL_SEALED_TICKS           160
+#define POD_CELL_CHEW_TICKS             24      // grub peeking through the wax before breaking out
+#define POD_HEART_PLUG_TICKS            40      // plugged, plus POD_HEART_PLUG_PER_CELL for every open cell
+#define POD_HEART_PLUG_PER_CELL         12
+#define POD_RAGE_PLUG_TICKS             24
+#define POD_RAGE_PLUG_PER_CELL          8
+#define POD_HEART_OPENING_TICKS         8
+#define POD_HEART_OPEN_TICKS            40
+#define POD_HONEY_BURST                 3       // drops, 4 ticks apart right after opening
+#define POD_RAGE_HONEY_BURST            5
+
+#define POD_ST_CALM                     1
+#define POD_ST_RAGE                     2
+
+#define POD_CELL_ST_OPEN                0
+#define POD_CELL_ST_SEALED              1
+
+#define POD_HEART_ST_PLUGGED            0
+#define POD_HEART_ST_OPENING            1
+#define POD_HEART_ST_OPEN               2
+
+// parts' columns under the pod by slot (state[2]) - four cells and the heart
+#define POD_SLOT_HEART                  4
+static const unsigned char pod_slot_x[5] = { 0, 4, 12, 16, 7 };
+
+// parts never die on their own, cells get sealed and the heart plugged
+#define POD_PART_HP                     1000
+
+// cells and heart: [0] - POD_CELL_ST_* / POD_HEART_ST_*, [1] - pod's id, [2] - slot
+void cb_pod_cell_hit(hsObject obj) {
+
+    if (obj->state[0] == POD_CELL_ST_SEALED)
+        obj->damage_now = 0;
+    else
+        obj->physical = &phy_grchkrx_cell_hit;
+}
+
+void cb_pod_heart_hit(hsObject obj) {
+
+    if (obj->state[0] != POD_HEART_ST_OPEN)
+        obj->damage_now = 0;
+    else
+        obj->physical = &phy_grchkrx_heart_hit;
+}
+
+static const sObjType ot_grchkrx_pod_cell = {
+    &phy_grchkrx_cell_0,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
+    POD_PART_HP,
+    NULL,
+    NULL,
+    cb_pod_cell_hit,
+    NULL
+};
+
+static const sObjType ot_grchkrx_pod_heart = {
+    &phy_grchkrx_heart_plug,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_NONE,
+    POD_PART_HP,
+    NULL,
+    NULL,
+    cb_pod_heart_hit,
+    NULL
+};
+
+#define POD_IS_PART(obj, p)             (((p)->type == &ot_grchkrx_pod_cell || (p)->type == &ot_grchkrx_pod_heart) && (p)->state[1] == (obj)->state[1] && !((p)->flags & OBJ_FLG_DYING))
+
+// id shared by a pod and it's parts
+static unsigned char pod_next_id;
+
+static void pod_spawn_part(hsObject obj, hcsObjType type, unsigned char slot, unsigned int ttl) {
+
+    hsObject part;
+
+    // added inactive, as it's spawned from within the objects' tick loop
+    if ((part = objpool_alloc_inactive(type)) == NULL)
+        return;
+
+    part->state[1]  = obj->state[1];
+    part->state[2]  = slot;
+    part->ttl       = ttl;
+}
+
+static void pod_init(hsObject obj) {
+
+    unsigned char slot;
+
+    if (++pod_next_id == 0)
+        pod_next_id = 1;
+
+    obj->state[0] = POD_ST_CALM;
+    obj->state[1] = pod_next_id;
+    obj->state[2] = obj->pos.x < grid2world(VIEWGRID_WIDTH / 2) ? 1 : -1;
+    obj->state[3] = 1;
+
+    // cells start dropping one after another
+    for (slot = 0; slot < POD_SLOT_HEART; slot++)
+        pod_spawn_part(obj, &ot_grchkrx_pod_cell, slot, 24 + slot * 20);
+
+    pod_spawn_part(obj, &ot_grchkrx_pod_heart, POD_SLOT_HEART, POD_HEART_PLUG_TICKS);
+}
+
+// larvae and bees around, hatched or not
+static unsigned char pod_brood(void) {
+
+    hsObject obj = NULL;
+    unsigned char count = 0;
+
+    while ((obj = objpool_next(obj)) != NULL)
+        if ((obj->type == &ot_grchkrx_larva || obj->type == &ot_grchkrx_bee) && !(obj->flags & OBJ_FLG_DYING))
+            count++;
+
+    return count;
+}
+
+static unsigned char pod_open_cells(hsObject obj) {
+
+    hsObject cell = NULL;
+    unsigned char count = 0;
+
+    while ((cell = objpool_next(cell)) != NULL)
+        if (POD_IS_PART(obj, cell) && cell->type == &ot_grchkrx_pod_cell && cell->state[0] == POD_CELL_ST_OPEN)
+            count++;
+
+    return count;
+}
+
+// slowly from side to side, now and then changing it's mind; up and down
+// (state[3]) between the top and the bottom row, now and then hovering
+static void pod_drift(hsObject obj) {
+
+    int x, y, max;
+    unsigned char rage = obj->state[0] == POD_ST_RAGE;
+
+    max = grid2world(VIEWGRID_WIDTH - obj->physical->dim.x);
+
+    if ((rand() & 63) == 0)
+        obj->state[2] = -obj->state[2];
+
+    x = (int)obj->pos.x + obj->state[2] * (rage ? POD_RAGE_SPEED : POD_DRIFT_SPEED);
+    if (x <= 0) {
+
+        x = 0;
+        obj->state[2] = 1;
+    }
+    else
+    if (x >= max) {
+
+        x = max;
+        obj->state[2] = -1;
+    }
+
+    obj->pos.x = x;
+
+    if ((rand() & 31) == 0)
+        obj->state[3] = 1 - (rand() % 3);
+
+    max = grid2world(rage ? POD_RAGE_BOTTOM_ROW : POD_BOTTOM_ROW);
+
+    y = (int)obj->pos.y + obj->state[3] * (rage ? POD_RAGE_RISE_SPEED : POD_RISE_SPEED);
+    if (y <= grid2world(POD_TOP_ROW)) {
+
+        y = grid2world(POD_TOP_ROW);
+        obj->state[3] = 1;
+    }
+    else
+    if (y >= max) {
+
+        y = max;
+        obj->state[3] = -1;
+    }
+
+    obj->pos.y = y;
+}
+
+static void pod_cell(hsObject obj, hsObject cell) {
+
+    hsObject larva;
+
+    switch (cell->state[0]) {
+
+        case POD_CELL_ST_OPEN:
+
+            // shot enough - sealed with wax
+            if (cell->damage_total >= POD_CELL_HP) {
+
+                cell->state[0]      = POD_CELL_ST_SEALED;
+                cell->damage_total  = 0;
+                cell->ttl           = POD_CELL_SEALED_TICKS;
+                cell->physical      = &phy_grchkrx_cell_sealed;
+                break;
+            }
+
+            if (cell->ttl <= POD_CELL_FULL_TICKS && (cell->ttl & 1))
+                cell->physical = &phy_grchkrx_cell_full;
+            else
+                cell->physical = (cell->ttl & 4) ? &phy_grchkrx_cell_1 : &phy_grchkrx_cell_0;
+
+            if (cell->ttl > 0)
+                break;
+
+            cell->ttl = (obj->state[0] == POD_ST_RAGE ? POD_RAGE_BROOD_TICKS : POD_CELL_BROOD_TICKS) + (rand() & 31);
+
+            // drop a larva right under the cell, unless there's plenty of brood
+            if (pod_brood() >= POD_MAX_BROOD || (larva = objpool_alloc_inactive(&ot_grchkrx_larva)) == NULL)
+                break;
+
+            larva->pos.x = cell->pos.x > grid2world(1) ? cell->pos.x - grid2world(1) : 0;
+            larva->pos.y = cell->pos.y + grid2world(1);
+            break;
+
+        case POD_CELL_ST_SEALED:
+
+            cell->physical = (cell->ttl <= POD_CELL_CHEW_TICKS && (cell->ttl & 2)) ? &phy_grchkrx_cell_chewed : &phy_grchkrx_cell_sealed;
+
+            // chewed through, the grub drops out soon
+            if (cell->ttl == 0) {
+
+                cell->state[0]      = POD_CELL_ST_OPEN;
+                cell->damage_total  = 0;
+                cell->ttl           = POD_CELL_FULL_TICKS + 4;
+            }
+            break;
+    }
+}
+
+static void pod_heart(hsObject obj, hsObject heart) {
+
+    unsigned char t, burst;
+
+    switch (heart->state[0]) {
+
+        case POD_HEART_ST_PLUGGED:
+
+            heart->physical = &phy_grchkrx_heart_plug;
+
+            if (heart->ttl == 0) {
+
+                heart->state[0] = POD_HEART_ST_OPENING;
+                heart->ttl      = POD_HEART_OPENING_TICKS;
+            }
+            break;
+
+        case POD_HEART_ST_OPENING:
+
+            heart->physical = (heart->ttl & 1) ? &phy_grchkrx_heart_flash : &phy_grchkrx_heart_plug;
+
+            if (heart->ttl == 0) {
+
+                heart->state[0] = POD_HEART_ST_OPEN;
+                heart->ttl      = POD_HEART_OPEN_TICKS;
+            }
+            break;
+
+        case POD_HEART_ST_OPEN:
+
+            // the heart is the pod's only weak spot
+            obj->damage_total += heart->damage_total;
+            heart->damage_total = 0;
+
+            heart->physical = (heart->ttl & 4) ? &phy_grchkrx_heart_1 : &phy_grchkrx_heart_0;
+
+            // already counted down once since opening
+            t       = POD_HEART_OPEN_TICKS - 1 - heart->ttl;
+            burst   = obj->state[0] == POD_ST_RAGE ? POD_RAGE_HONEY_BURST : POD_HONEY_BURST;
+            if (!(t & 3) && t / 4 < burst)
+                honey_aimed(heart, &turret_grchkrx_heart_honey);
+
+            // plugged the longer the more cells are open
+            if (heart->ttl == 0) {
+
+                heart->state[0] = POD_HEART_ST_PLUGGED;
+                if (obj->state[0] == POD_ST_RAGE)
+                    heart->ttl = POD_RAGE_PLUG_TICKS + POD_RAGE_PLUG_PER_CELL * pod_open_cells(obj);
+                else
+                    heart->ttl = POD_HEART_PLUG_TICKS + POD_HEART_PLUG_PER_CELL * pod_open_cells(obj);
+            }
+            break;
+    }
+}
+
+void cb_pod_behave(hsObject obj) {
+
+    hsObject part;
+
+    if (obj->flags & OBJ_FLG_DYING)
+        return;
+
+    // first tick, spawn the parts
+    if (obj->state[0] == 0)
+        pod_init(obj);
+
+    // comb cracks at half hp - every cell bursts open, one right after another
+    if (obj->state[0] == POD_ST_CALM && obj->damage_total * 2 >= obj->type->hp) {
+
+        obj->state[0] = POD_ST_RAGE;
+
+        part = NULL;
+        while ((part = objpool_next(part)) != NULL) {
+
+            if (!POD_IS_PART(obj, part) || part->type != &ot_grchkrx_pod_cell)
+                continue;
+
+            part->state[0]      = POD_CELL_ST_OPEN;
+            part->damage_total  = 0;
+            part->ttl           = POD_CELL_FULL_TICKS + part->state[2] * 3;
+        }
+    }
+
+    obj->physical = obj->state[0] == POD_ST_RAGE ? &phy_grchkrx_pod_cracked : &phy_grchkrx_pod;
+
+    pod_drift(obj);
+
+    // parts hang right under the comb
+    part = NULL;
+    while ((part = objpool_next(part)) != NULL) {
+
+        if (!POD_IS_PART(obj, part))
+            continue;
+
+        part->pos.x = obj->pos.x + grid2world(pod_slot_x[part->state[2]]);
+        part->pos.y = obj->pos.y + grid2world(obj->physical->dim.y);
+
+        if (part->type == &ot_grchkrx_pod_heart)
+            pod_heart(obj, part);
+        else
+            pod_cell(obj, part);
+    }
+}
+
+void cb_pod_die(hsObject obj) {
+
+    hsObject part;
+
+    obj->physical = &phy_grchkrx_pod_dying;
+    obj->ttl = 10;
+    obj->speed.y = 1;
+
+    // parts fall apart with it
+    part = NULL;
+    while ((part = objpool_next(part)) != NULL) {
+
+        if (!POD_IS_PART(obj, part))
+            continue;
+
+        part->flags     |= OBJ_FLG_DYING;
+        part->physical  = part->type == &ot_grchkrx_pod_heart ? &phy_grchkrx_heart_dying : &phy_grchkrx_cell_dying;
+        part->ttl       = 4;
+    }
+}
+
+// the comb is armour, only the heart's hits count
+void cb_pod_hit(hsObject obj) {
+
+    obj->damage_now = 0;
+}
+
 void cb_queen_behave(hsObject obj) {
 
     obj->speed.y = adjust(obj->speed.y + 1 - (rand() % 3), -3, 3);
@@ -1296,7 +1726,7 @@ const sObjType ot_grchkrx_stinger = {
     &phy_grchkrx_stinger_0,
     OBJTYPE_NAT_FOE_OBJ,
     OBJTYPE_FLG_NONE,
-    12,
+    18,
     cb_stinger_behave,
     cb_stinger_die,
     cb_stinger_hit,
@@ -1322,5 +1752,16 @@ const sObjType ot_grchkrx_queen = {
     cb_queen_behave,
     cb_queen_die,
     cb_queen_hit,
+    NULL
+};
+
+const sObjType ot_grchkrx_pod = {
+    &phy_grchkrx_pod,
+    OBJTYPE_NAT_FOE_OBJ,
+    OBJTYPE_FLG_HPBAR,
+    POD_HP,
+    cb_pod_behave,
+    cb_pod_die,
+    cb_pod_hit,
     NULL
 };
