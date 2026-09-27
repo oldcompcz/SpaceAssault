@@ -157,9 +157,7 @@ static void draw_hpbar(hsObject obj) {
 }
 
 // put the object into the damage map under all it's non-transparent image
-// cells, "cell" being the map cell under it's top left corner; kept apart
-// from progress(), as using SI/DI in inline asm makes the compiler give up
-// register variables for the whole function
+// cells, "cell" being the map cell under it's top left corner
 static void gmap_put(hsObject *cell, const char *img, unsigned char w, unsigned char h, hsObject obj) {
 
     if (w == 0 || h == 0)
@@ -300,23 +298,8 @@ void progress(unsigned char cycle) {
             if (otype->nature & (OBJTYPE_NATMASK_ALLY | OBJTYPE_NATMASK_FOE)) {
 
                 // add the object to the damage map
-                // char imgoff;
-                unsigned char objindex;
-                char xtype = (otype->nature & OBJTYPE_NATMASK_FOE) ? 1 : 0;
-        
                 otphy = obj->physical;
-
-                pos.x = world2grid(obj->pos.x);
-                pos.y = world2grid(obj->pos.y);
-
-                /*
-                imgoff = 0;
-                for (vec.y = 0; vec.y < otphy->dim.y; vec.y++)
-                    for (vec.x = 0; vec.x < otphy->dim.x; vec.x++, imgoff += 2)
-                        if (otphy->image[imgoff] != 0)
-                            g_map[vec.y + pos.y][vec.x + pos.x][xtype] = obj;
-                */
-                gmap_put(&g_map[pos.y][pos.x][xtype], otphy->image, otphy->dim.x, otphy->dim.y, obj);
+                gmap_put(&g_map[world2grid(obj->pos.y)][world2grid(obj->pos.x)][(otype->nature & OBJTYPE_NATMASK_FOE) ? 1 : 0], otphy->image, otphy->dim.x, otphy->dim.y, obj);
             }
         }
     }

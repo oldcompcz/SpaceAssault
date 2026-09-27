@@ -69,7 +69,7 @@ static const sPhysical phy_fuser_small          = PHY_CELL_SMALL('{', '}', 0x0a,
 static const sPhysical phy_fuser_small_hit      = PHY_CELL_SMALL('{', '}', 0x0f, 0x0e);
 static const sPhysical phy_fuser_small_pop      = PHY_CELL_POP(0x02, 0x0a);
 
-static const sPhysical phy_cell_goo             = PHYSICAL_1X1('\x07', 0x0e);
+static const sPhysical phy_cell_goo             = PHYSICAL_1X1('\x07', 0x02);
 
 // ---------------------------------------------------------------------------
 // object types
