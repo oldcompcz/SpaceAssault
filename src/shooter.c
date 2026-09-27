@@ -32,7 +32,7 @@
 #define HPBAR_LABEL_WIDTH               3       // "HP "
 #define HPBAR_LEFT                      (VIEWGRID_SCREEN_X + HPBAR_LABEL_WIDTH)
 #define HPBAR_WIDTH                     (VIEWGRID_WIDTH - HPBAR_LABEL_WIDTH)
-#define HPBAR_FLASH_FRAMES              6       // white flash after taking a hit
+#define HPBAR_FLASH_FRAMES              0x33    // white flash after taking a hit - bitmap where 1 for flash and 0 for no flash
 
 extern const sScenarioPoint g_scenario_original[];
 
@@ -612,8 +612,10 @@ int main(int argc, char *argv[]) {
 
         if (hp_flash) {
 
-            hp_flash--;
+            if (hp_flash & 1)
             screen_color(15);
+
+            hp_flash >>= 1;
         }
         else
         if (hp_left * 3 > player->type->hp * 2)
