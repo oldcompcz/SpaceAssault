@@ -35,6 +35,7 @@
 #define HPBAR_FLASH_FRAMES              0x33    // white flash after taking a hit - bitmap where 1 for flash and 0 for no flash
 
 extern const sScenarioPoint g_scenario_original[];
+extern const sScenarioPoint g_scenario_honey[];
 
 hsObject g_map[VIEWGRID_HEIGHT][VIEWGRID_WIDTH][2]; // 0 is ally, 1 is foe
 hsObject player, shield;
@@ -58,6 +59,7 @@ typedef const sScenarioInfo *hcsScenarioInfo;
 // "start.exe" alone (or with unknown argument) plays the main one
 static const sScenarioInfo scenarios[] = {
     { "1",      g_scenario_original },
+    { "2",      g_scenario_honey },
 };
 
 /*
