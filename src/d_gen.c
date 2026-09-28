@@ -36,7 +36,7 @@ static const sPhysical phy_shield = {
         '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d,   '-',    0x5d
     }
 };
-static const sPhysical phy_hitme = {
+const sPhysical phy_hitme = {
     { 7, 2 },
     {
         '_',    0x0a,   '_',    0x0a,   '_',    0x0a,   '_',    0x0a,   '_',    0x0a,   '_',    0x0a,   '_',    0x0a,

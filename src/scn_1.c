@@ -15,6 +15,7 @@ static const sDisplayText text_intro_0[] = {
     { { 6, 16 },  0x04, "   __  __  __  __  __     __  __  __  __         __ " },
     { { 6, 17 },  0x0c, "  /_  /_/ /_/ /   /_     /_/ /_  /_  /_/ / / /   /  " },
     { { 6, 18 },  0x08, " __/ /   / / /_  /_     / / __/ __/ / / /_/ /_  /   " },
+    { { 21, 22 }, 0x07, "the original scenario" },
 };
 static const sDisplayText text_intro_1[] = {
     { { 28, 10 }, 0x0f, "CONGRATS!" }, 
@@ -64,10 +65,11 @@ const sScenarioPoint g_scenario_original[] = {
     SCPOINT_MACRO_TEXT(text_intro_0, 5, 1),
     SCPOINT_MACRO_TEXT(text_intro_0, 2, 1),
     SCPOINT_MACRO_TEXT(text_intro_0, 5, 5),
+    SCPOINT_MACRO_TEXT(text_intro_0, 6, 5),
 
     // wait for "hitme" under intro text
-    { SCPOINT_TYPE_NONE, 3, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT(text_intro_0, 5), &ot_btn_hitme, SCPOINT_EPOS(26, 26) },
-    SCPOINT_MACRO_WAIT_DEAD_TEXT(text_intro_0, 5),
+    { SCPOINT_TYPE_NONE, 3, 0, scpt_emit_at_pos, SCPOINT_SUB_TEXT(text_intro_0, 6), &ot_btn_hitme, SCPOINT_EPOS(26, 26) },
+    SCPOINT_MACRO_WAIT_DEAD_TEXT(text_intro_0, 6),
     
     // puzzle congrats
     SCPOINT_MACRO_TEXT(text_intro_1, 2, 8),

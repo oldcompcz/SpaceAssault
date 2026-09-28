@@ -36,12 +36,15 @@
 
 extern const sScenarioPoint g_scenario_original[];
 extern const sScenarioPoint g_scenario_honey[];
+extern const sScenarioPoint g_scenario_menu[];
+extern hcsScenarioPoint g_scenario_next;
 
 hsObject g_map[VIEWGRID_HEIGHT][VIEWGRID_WIDTH][2]; // 0 is ally, 1 is foe
 hsObject player, shield;
 unsigned char player_weapon_delay;
 hcsScenarioPoint scpoint;
 unsigned char scpoint_timer;
+unsigned char scpoint_frames;               // scpoint_timer counts frames, not 1/4 secs
 unsigned char scpoint_repeat;
 hcsDisplayText show_text_first;
 unsigned char show_text_count;
@@ -56,7 +59,7 @@ typedef struct sScenarioInfo {
 typedef const sScenarioInfo *hcsScenarioInfo;
 
 // scenarios selectable by the command line argument (case insensitive),
-// "start.exe" alone (or with unknown argument) plays the main one
+// "start.exe" alone (or with unknown argument) opens the scenario menu
 static const sScenarioInfo scenarios[] = {
     { "1",      g_scenario_original },
     { "2",      g_scenario_honey },
@@ -446,7 +449,7 @@ int main(int argc, char *argv[]) {
     input_init();
 
     // determine scenario to play
-    scpoint = &g_scenario_original[0];
+    scpoint = &g_scenario_menu[0];
     if (argc > 1) {
 
         for (scinfo = &scenarios[0]; scinfo < &scenarios[dimof(scenarios)]; scinfo++) {
@@ -461,6 +464,7 @@ int main(int argc, char *argv[]) {
 
     // initialize scenario state
     scpoint_timer = 0;
+    scpoint_frames = 0;
     scpoint_repeat = 0;
     show_text_first = NULL;
     show_text_count = 0;
@@ -477,6 +481,24 @@ int main(int argc, char *argv[]) {
 
         if (paused)
             continue;
+
+        // scenario picked in the menu - sweep away the other buttons and
+        // any shots still flying, then start it from the beginning
+        if (g_scenario_next != NULL) {
+
+            emit = NULL;
+            while ((emit = objpool_next(emit)) != NULL)
+                if (emit != player)
+                    emit->flags |= OBJ_FLG_DESTROY;
+
+            scpoint = g_scenario_next;
+            g_scenario_next = NULL;
+            scpoint_timer = 0;
+            scpoint_frames = 0;
+            scpoint_repeat = 0;
+            show_text_first = NULL;
+            show_text_count = 0;
+        }
     
         if (debug && PERIOD_4PERSEC) {
         
@@ -498,7 +520,7 @@ int main(int argc, char *argv[]) {
         }
             
         // handle scenario
-        if (PERIOD_4PERSEC) {
+        if (scpoint_frames || PERIOD_4PERSEC) {
         
             if (scpoint_timer > 0) {
             
@@ -507,13 +529,14 @@ int main(int argc, char *argv[]) {
             else {
             
                 scpoint_timer = scpoint->delay;
+                scpoint_frames = scpoint->type & SCPOINT_FLG_FRAMES;
                 show_text_first = scpoint->ds_text;
                 show_text_count = scpoint->ds_count;
                 
                 if (scpoint->cb_tick != NULL)
                     (scpoint->cb_tick)(scpoint, scpoint_repeat);
                 
-                switch (scpoint->type) {
+                switch (scpoint->type & SCPOINT_TYPE_MASK) {
                 
                     case SCPOINT_TYPE_WAIT_DEAD:
 

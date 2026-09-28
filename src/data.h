@@ -13,6 +13,8 @@ hsObject fire_turret(hsObject obj, hcsTurret turret);
 int adjust(int value, int min, int max);
 void cb_deal_die(hsObject bullet, hsObject target);
 
+extern const sPhysical phy_hitme;
+
 extern const sTurret turret_player_bullet;
 extern const sTurret turret_player_megablast;
 extern const sTurret turret_player_lleft;

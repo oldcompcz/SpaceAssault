@@ -23,6 +23,7 @@ objpool.obj \
 scenario.obj \
 scn_1.obj \
 scn_2.obj \
+scn_m.obj \
 screen.obj \
 shooter.obj
 

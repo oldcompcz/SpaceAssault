@@ -20,6 +20,7 @@ void scpt_emit_mirrored(hcsScenarioPoint scpoint, unsigned char repeat);
 
 //                                          type,                       delay,  repeat, tick,   text,                   emit,   pos
 #define SCPOINT_MACRO_TEXT(t, c, d)         { SCPOINT_TYPE_NONE,        (d),    0,      NULL,   SCPOINT_SUB_TEXT(t, c), NULL,   { 0, 0 } }
+#define SCPOINT_MACRO_TEXT_FRAMES(t, c, d)  { SCPOINT_TYPE_NONE | SCPOINT_FLG_FRAMES, (d), 0, NULL, SCPOINT_SUB_TEXT(t, c), NULL, { 0, 0 } }
 #define SCPOINT_MACRO_DELAY(d)              { SCPOINT_TYPE_NONE,        (d),    0,      NULL,   SCPOINT_SUB_TEXT_NONE,  NULL,   { 0, 0 } }
 #define SCPOINT_MACRO_WAIT_DEAD(d)          { SCPOINT_TYPE_WAIT_DEAD,   (d),    1,      NULL,   SCPOINT_SUB_TEXT_NONE,  NULL,   { 0, 0 } }
 #define SCPOINT_MACRO_WAIT_DEAD_TEXT(t, c)  { SCPOINT_TYPE_WAIT_DEAD,   1,      1,      NULL,   SCPOINT_SUB_TEXT(t, c), NULL,   { 0, 0 } }

@@ -149,6 +149,10 @@ typedef const sDisplayText *hcsDisplayText;
 #define SCPOINT_TYPE_NONE               1
 #define SCPOINT_TYPE_WAIT_DEAD          2   // wait until all objects are dead
 #define SCPOINT_TYPE_END                3   // total end
+#define SCPOINT_TYPE_MASK               0x0f
+
+// scenario event point flags, or-ed to the type
+#define SCPOINT_FLG_FRAMES              0x10    // delay counted in frames (1/64 secs) instead of 1/4 secs
 
 // callback to implement scenarion point's tick behaviour
 typedef void cbScenarioPoint(hcsScenarioPoint scpoint, unsigned char index);
@@ -157,7 +161,7 @@ typedef void cbScenarioPoint(hcsScenarioPoint scpoint, unsigned char index);
 typedef struct sScenarioPoint {
 
     char                    type;           // SCPOINT_TYPE_*
-    unsigned char           delay;          // delay after performing the point in 1/4 secs
+    unsigned char           delay;          // delay after performing the point in 1/4 secs (or frames)
     unsigned char           repeat;         // how many times the point goes around (after delay)
 
     cbScenarioPoint         *cb_tick;       // called once every "delay", total 1 + "repeat" times
